@@ -4,6 +4,8 @@ import AppointmentsTable from "@/components/dashboard/AppointmentsTable";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatsBar from "@/components/dashboard/StatsBar";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const supabase = await createClient();
 
@@ -31,7 +33,10 @@ export default async function DashboardPage() {
       <DashboardHeader clinicName={clinic.name} userEmail={user.email ?? ""} />
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-6">
         <StatsBar appointments={appointments ?? []} />
-        <AppointmentsTable appointments={appointments ?? []} />
+        <AppointmentsTable
+          appointments={appointments ?? []}
+          clinicId={clinic.id}
+        />
       </main>
     </div>
   );

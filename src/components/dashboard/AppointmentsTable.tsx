@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Appointment } from "@/types";
 import {
   Table,
@@ -19,14 +19,43 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Play, Phone } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 interface Props {
   appointments: Appointment[];
+  clinicId: string;
 }
 
-export default function AppointmentsTable({ appointments }: Props) {
+export default function AppointmentsTable({
+  appointments: initial,
+  clinicId,
+}: Props) {
+  const [appointments, setAppointments] = useState<Appointment[]>(initial);
   const [selectedAppointment, setSelectedAppointment] =
     useState<Appointment | null>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("appointments")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "appointments",
+          filter: `clinic_id=eq.${clinicId}`,
+        },
+        (payload) => {
+          setAppointments((prev) => [payload.new as Appointment, ...prev]);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [clinicId]);
 
   if (appointments.length === 0) {
     return (
