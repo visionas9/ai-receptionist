@@ -10,16 +10,22 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // Only process end-of-call reports
     if (body.message?.type !== "end-of-call-report") {
       return NextResponse.json({ received: true });
     }
 
     const message = body.message;
-    const analysis = message.analysis?.structuredData || {};
     const artifact = message.artifact || {};
 
-    // Get the first clinic for demo purposes
+    // Structured outputs are on artifact, keyed by output ID
+    const structuredOutputs = artifact.structuredOutputs || {};
+    const bookingEntry = Object.values(structuredOutputs).find(
+      (o: any) => o.name === "Booking Details",
+    ) as any;
+    const booking = bookingEntry?.result || {};
+
+    console.log("Booking:", JSON.stringify(booking, null, 2));
+
     const { data: clinic } = await supabase
       .from("clinics")
       .select("id")
@@ -32,11 +38,11 @@ export async function POST(req: NextRequest) {
 
     const { error } = await supabase.from("appointments").insert({
       clinic_id: clinic.id,
-      patient_name: analysis.patient_name || "Unknown",
+      patient_name: booking.customerName || "Unknown",
       patient_phone: message.customer?.number || null,
-      appointment_date: analysis.appointment_date || null,
-      appointment_time: analysis.appointment_time || null,
-      reason: analysis.reason || null,
+      appointment_date: booking.appointmentDate || null,
+      appointment_time: booking.appointmentTime || null,
+      reason: booking.serviceType || null,
       call_id: message.call?.id || null,
       recording_url: artifact.recordingUrl || null,
       transcript: artifact.transcript || null,
