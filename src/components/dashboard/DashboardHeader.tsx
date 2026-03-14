@@ -13,9 +13,14 @@ import {
 interface Props {
   clinicName: string;
   userEmail: string;
+  ownerName: string;
 }
 
-export default function DashboardHeader({ clinicName, userEmail }: Props) {
+export default function DashboardHeader({
+  clinicName,
+  userEmail,
+  ownerName,
+}: Props) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -46,7 +51,7 @@ export default function DashboardHeader({ clinicName, userEmail }: Props) {
                 </AvatarFallback>
               </Avatar>
               <span className="text-sm text-[#666] hidden md:block">
-                {userEmail}
+                {ownerName}
               </span>
             </button>
           </DropdownMenuTrigger>

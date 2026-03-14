@@ -2,6 +2,7 @@ export interface Clinic {
   id: string;
   user_id: string;
   name: string;
+  owner_name: string | null;
   created_at: string;
 }
 
