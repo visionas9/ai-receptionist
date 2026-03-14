@@ -104,9 +104,13 @@ export default function LandingPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#FFFCF7]/90 backdrop-blur-sm border-b border-[#f0ebe0]">
         <div className="max-w-6xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-          <span className="font-display text-xl font-bold text-[#1a1a1a]">
+          <Link
+            href="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="font-display text-xl font-bold text-[#1a1a1a] hover:opacity-80 transition-opacity"
+          >
             Receply
-          </span>
+          </Link>
           <nav className="hidden md:flex items-center gap-8">
             <button
               onClick={() =>
