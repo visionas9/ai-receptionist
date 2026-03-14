@@ -28,13 +28,11 @@ export default function SignupPage() {
     }
 
     if (data.user) {
-      const { error: clinicError } = await supabase
-        .from("clinics")
-        .insert({
-          user_id: data.user.id,
-          name: clinicName,
-          owner_name: ownerName,
-        });
+      const { error: clinicError } = await supabase.from("clinics").insert({
+        user_id: data.user.id,
+        name: clinicName,
+        owner_name: ownerName,
+      });
 
       if (clinicError) {
         setError(clinicError.message);
@@ -123,13 +121,39 @@ export default function SignupPage() {
             </div>
           </div>
 
-          <button
-            onClick={handleSignup}
-            disabled={loading}
-            className="w-full mt-6 bg-[#1a1a1a] text-white py-3 rounded-full text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
-          >
-            {loading ? "Creating account..." : "Create account"}
-          </button>
+          {loading ? (
+            <div className="w-full mt-6 bg-[#1a1a1a] text-white py-3 rounded-full text-sm font-medium flex items-center justify-center gap-2">
+              <svg
+                className="animate-spin h-4 w-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
+              </svg>
+              Creating your account...
+            </div>
+          ) : (
+            <button
+              onClick={handleSignup}
+              disabled={loading}
+              className="w-full mt-6 bg-[#1a1a1a] text-white py-3 rounded-full text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
+            >
+              Create account
+            </button>
+          )}
 
           <p className="text-center text-sm text-[#666] mt-6">
             Already have an account?{" "}
