@@ -29,9 +29,15 @@ export default async function DashboardPage() {
     .order("created_at", { ascending: false });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#FFFCF7]">
       <DashboardHeader clinicName={clinic.name} userEmail={user.email ?? ""} />
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#1a1a1a]">Appointments</h1>
+          <p className="text-sm text-[#666] mt-1">
+            All bookings made via your AI receptionist
+          </p>
+        </div>
         <StatsBar appointments={appointments ?? []} />
         <AppointmentsTable
           appointments={appointments ?? []}
