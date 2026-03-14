@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Appointment } from "@/types";
 import { Calendar, Clock, CheckCircle, Phone } from "lucide-react";
 
@@ -19,42 +18,27 @@ export default function StatsBar({ appointments }: Props) {
   const withRecordingCount = appointments.filter((a) => a.recording_url).length;
 
   const stats = [
-    {
-      label: "Total Appointments",
-      value: totalCount,
-      icon: Calendar,
-    },
-    {
-      label: "Booked Today",
-      value: todayCount,
-      icon: Clock,
-    },
-    {
-      label: "Confirmed",
-      value: confirmedCount,
-      icon: CheckCircle,
-    },
-    {
-      label: "With Recording",
-      value: withRecordingCount,
-      icon: Phone,
-    },
+    { label: "Total Appointments", value: totalCount, icon: Calendar },
+    { label: "Booked Today", value: todayCount, icon: Clock },
+    { label: "Confirmed", value: confirmedCount, icon: CheckCircle },
+    { label: "With Recording", value: withRecordingCount, icon: Phone },
   ];
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {stats.map((stat) => (
-        <Card key={stat.label}>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <p className="text-3xl font-bold mt-1">{stat.value}</p>
-              </div>
-              <stat.icon className="h-8 w-8 text-muted-foreground opacity-50" />
+        <div
+          key={stat.label}
+          className="bg-white border border-[#f0ebe0] rounded-2xl p-5 hover:shadow-sm transition-shadow"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs text-[#666] font-medium">{stat.label}</p>
+            <div className="w-8 h-8 bg-[#FFF3E0] rounded-xl flex items-center justify-center">
+              <stat.icon className="h-4 w-4 text-[#E65100]" />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+          <p className="text-3xl font-bold text-[#1a1a1a]">{stat.value}</p>
+        </div>
       ))}
     </div>
   );
