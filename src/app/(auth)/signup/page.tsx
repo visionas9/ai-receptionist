@@ -9,6 +9,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clinicName, setClinicName] = useState("");
+  const [ownerName, setOwnerName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -29,7 +30,11 @@ export default function SignupPage() {
     if (data.user) {
       const { error: clinicError } = await supabase
         .from("clinics")
-        .insert({ user_id: data.user.id, name: clinicName });
+        .insert({
+          user_id: data.user.id,
+          name: clinicName,
+          owner_name: ownerName,
+        });
 
       if (clinicError) {
         setError(clinicError.message);
@@ -67,6 +72,18 @@ export default function SignupPage() {
             </div>
           )}
           <div className="space-y-5">
+            <div>
+              <label className="text-sm font-medium text-[#1a1a1a] block mb-2">
+                Your Name
+              </label>
+              <input
+                type="text"
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                className="w-full px-4 py-3 border border-[#f0ebe0] rounded-xl bg-[#FFFCF7] text-sm focus:outline-none focus:ring-2 focus:ring-[#E65100]/20 focus:border-[#E65100] transition-colors"
+                placeholder="Dr. John Smith"
+              />
+            </div>
             <div>
               <label className="text-sm font-medium text-[#1a1a1a] block mb-2">
                 Clinic Name
