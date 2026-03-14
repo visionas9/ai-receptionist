@@ -54,3 +54,13 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
+
+/* Receply custom variables */
+:root {
+  --receply-bg: #fffcf7;
+  --receply-border: #f0ebe0;
+  --receply-accent: #e65100;
+  --receply-accent-light: #fff3e0;
+  --receply-section-alt: #f8f4ee;
+  --receply-muted: #666666;
+}
