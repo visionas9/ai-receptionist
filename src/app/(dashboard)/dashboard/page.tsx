@@ -22,6 +22,8 @@ export default async function DashboardPage() {
 
   if (!clinic) redirect("/login");
 
+  if (!clinic.onboarded) redirect("/onboarding");
+
   const { data: appointments } = await supabase
     .from("appointments")
     .select("*")
