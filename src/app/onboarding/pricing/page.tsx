@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 const plans = [
   {
@@ -52,7 +53,17 @@ const plans = [
 export default function PricingPage() {
   const router = useRouter();
 
-  const handleSelect = () => {
+  const handleSelect = async () => {
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) {
+      await supabase
+        .from("clinics")
+        .update({ onboarded: true })
+        .eq("user_id", user.id);
+    }
     router.push("/dashboard");
   };
 
