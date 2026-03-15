@@ -16,13 +16,13 @@ const features = [
     icon: Phone,
     title: "24/7 Phone Answering",
     description:
-      "Your AI receptionist picks up every call, day or night, weekends included. No more missed appointments.",
+      "Your AI receptionist picks up every call, day or night, weekends included — for clinics, salons, barber shops, and more.",
   },
   {
     icon: Calendar,
     title: "Instant Booking",
     description:
-      "Patients book their appointments naturally over the phone. No apps, no forms, no friction.",
+      "Customers book appointments naturally over the phone. No apps, no forms, no friction.",
   },
   {
     icon: Clock,
@@ -46,14 +46,14 @@ const features = [
     icon: Shield,
     title: "Secure & Private",
     description:
-      "Patient data is encrypted and stored securely. Full compliance with privacy regulations.",
+      "Customer data is encrypted and stored securely. Full compliance with privacy regulations.",
   },
 ];
 
 const steps = [
   {
     number: "01",
-    title: "Patient calls your number",
+    title: "Customer calls your number",
     description:
       "Your dedicated phone number rings and Receply answers immediately.",
   },
@@ -172,14 +172,15 @@ export default function LandingPage() {
       <section className="max-w-6xl mx-auto px-4 md:px-8 pt-20 md:pt-32 pb-20 text-center">
         <div className="animate-fade-up inline-flex items-center gap-2 bg-[#FFF3E0] text-[#E65100] text-sm font-medium px-4 py-1.5 rounded-full mb-8">
           <span className="w-2 h-2 bg-[#E65100] rounded-full animate-pulse" />
-          AI-powered receptionist
+          AI receptionist for service businesses
         </div>
         <h1 className="animate-fade-up delay-1 font-display text-5xl md:text-7xl font-black leading-tight mb-6 text-[#1a1a1a]">
           Never miss a booking again
         </h1>
         <p className="animate-fade-up delay-2 text-lg md:text-xl text-[#666] max-w-2xl mx-auto mb-10 leading-relaxed">
-          Receply answers your clinic's phone calls 24/7, books appointments
-          automatically, and updates your dashboard in real time.
+          Receply answers your phone calls 24/7, books appointments
+          automatically, and updates your dashboard in real time — for any
+          service business.
         </p>
         <div className="animate-fade-up delay-3 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
@@ -189,7 +190,6 @@ export default function LandingPage() {
             Start for free
             <ChevronRight className="h-4 w-4" />
           </Link>
-
           <button
             onClick={() =>
               document
@@ -259,7 +259,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-black mb-4">
-              Everything your clinic needs
+              Everything your business needs
             </h2>
             <p className="text-[#666] text-lg max-w-xl mx-auto">
               From the first ring to the confirmed booking — fully automated.
@@ -316,10 +316,11 @@ export default function LandingPage() {
       <section className="bg-[#1a1a1a] py-20 md:py-32">
         <div className="max-w-6xl mx-auto px-4 md:px-8 text-center">
           <h2 className="font-display text-4xl md:text-5xl font-black text-white mb-4">
-            Ready to automate your clinic?
+            Ready to automate your business?
           </h2>
           <p className="text-[#999] text-lg mb-10">
-            Join clinics already saving hours every week with Receply.
+            Join service businesses already saving hours every week with
+            Receply.
           </p>
           <Link
             href="/signup"
