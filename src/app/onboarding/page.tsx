@@ -119,22 +119,31 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-[#FFFCF7] flex flex-col">
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap'); .font-display { font-family: 'Fraunces', serif; }`}</style>
 
-      {/* Progress bar */}
-      <div className="w-full h-1 bg-[#f0ebe0]">
-        <div
-          className="h-1 bg-[#E65100] transition-all duration-500"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-
       {/* Header */}
-      <div className="max-w-xl mx-auto w-full px-4 pt-8 flex items-center justify-between">
-        <span className="font-display font-bold text-lg text-[#1a1a1a]">
-          Receply
-        </span>
-        <span className="text-sm text-[#999]">
-          {step + 1} of {questions.length}
-        </span>
+      {/* Header */}
+      <div className="max-w-xl mx-auto w-full px-4 pt-8">
+        <div className="flex items-center justify-between mb-4">
+          <span className="font-display font-bold text-lg text-[#1a1a1a]">
+            Receply
+          </span>
+          <span className="text-sm text-[#999]">
+            {step + 1} of {questions.length}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          {questions.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                i < step
+                  ? "bg-[#E65100]"
+                  : i === step
+                    ? "bg-[#E65100]/60"
+                    : "bg-[#f0ebe0]"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Question */}

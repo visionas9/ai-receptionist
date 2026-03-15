@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { useState } from "react";
 
 const plans = [
   {
@@ -52,17 +53,22 @@ const plans = [
 
 export default function PricingPage() {
   const router = useRouter();
+  const [selecting, setSelecting] = useState(false);
 
-  const handleSelect = async () => {
+  const handleSelect = async (planName: string) => {
+    setSelecting(true);
     const supabase = createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
+    console.log("user:", user);
+
     if (user) {
-      await supabase
+      const { error } = await supabase
         .from("clinics")
         .update({ onboarded: true })
         .eq("user_id", user.id);
+      console.log("update error:", error);
     }
     router.push("/dashboard");
   };
@@ -151,24 +157,31 @@ export default function PricingPage() {
             </ul>
 
             <button
-              onClick={handleSelect}
-              className={`w-full py-3 rounded-full text-sm font-medium transition-colors ${
+              onClick={() => handleSelect(plan.name)}
+              disabled={selecting}
+              className={`w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 ${
                 plan.highlight
                   ? "bg-[#E65100] text-white hover:bg-[#bf4000]"
                   : "bg-[#1a1a1a] text-white hover:bg-[#333]"
               }`}
             >
-              {plan.cta}
+              {selecting ? "Setting up..." : plan.cta}
             </button>
           </div>
         ))}
       </div>
-
       <p className="text-center text-sm text-[#999] mt-8">
         All plans include{" "}
         <span className="text-[#E65100] font-medium">unlimited AI calls</span>.
         Start with 15 free minutes, no credit card required.
       </p>
+
+      <button
+        onClick={() => handleSelect("free")}
+        className="block mx-auto mt-4 text-sm text-[#999] hover:text-[#666] transition-colors underline underline-offset-2"
+      >
+        Skip for now, explore the dashboard
+      </button>
     </div>
   );
 }
