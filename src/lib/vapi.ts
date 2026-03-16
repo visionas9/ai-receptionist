@@ -1,5 +1,5 @@
 const VAPI_API_URL = "https://api.vapi.ai";
-const VAPI_PRIVATE_KEY = process.env.VAPI_PRIVATE_KEY!;
+const VAPI_PRIVATE_KEY = process.env.VAPI_SECRET!;
 
 function buildSystemPrompt(clinic: {
   name: string;
