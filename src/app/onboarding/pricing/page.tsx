@@ -54,22 +54,35 @@ const plans = [
 export default function PricingPage() {
   const router = useRouter();
   const [selecting, setSelecting] = useState(false);
-
   const handleSelect = async (planName: string) => {
     setSelecting(true);
     const supabase = createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    console.log("user:", user);
 
     if (user) {
-      const { error } = await supabase
+      // Mark as onboarded
+      await supabase
         .from("clinics")
         .update({ onboarded: true })
         .eq("user_id", user.id);
-      console.log("update error:", error);
+
+      // Provision Vapi assistant
+      try {
+        const response = await fetch("/api/provision", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id }),
+        });
+        const data = await response.json();
+        console.log("Assistant provisioned:", data.assistantId);
+      } catch (err) {
+        console.error("Provisioning failed:", err);
+        // Don't block navigation if provisioning fails
+      }
     }
+
     router.push("/dashboard");
   };
 
