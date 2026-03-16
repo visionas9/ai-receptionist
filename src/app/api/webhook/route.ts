@@ -17,7 +17,29 @@ export async function POST(req: NextRequest) {
     const message = body.message;
     const artifact = message.artifact || {};
 
-    // Structured outputs are on artifact, keyed by output ID
+    const assistantId = message.assistant?.id || message.call?.assistantId;
+    console.log("Assistant ID from webhook:", assistantId);
+
+    if (!assistantId) {
+      return NextResponse.json(
+        { error: "No assistant ID in webhook" },
+        { status: 400 },
+      );
+    }
+
+    const { data: clinic } = await supabase
+      .from("clinics")
+      .select("id")
+      .eq("vapi_assistant_id", assistantId)
+      .single();
+
+    if (!clinic) {
+      return NextResponse.json(
+        { error: "No clinic found for this assistant" },
+        { status: 404 },
+      );
+    }
+
     const structuredOutputs = artifact.structuredOutputs || {};
     const bookingEntry = Object.values(structuredOutputs).find(
       (o: any) => o.name === "Booking Details",
@@ -25,16 +47,6 @@ export async function POST(req: NextRequest) {
     const booking = bookingEntry?.result || {};
 
     console.log("Booking:", JSON.stringify(booking, null, 2));
-
-    const { data: clinic } = await supabase
-      .from("clinics")
-      .select("id")
-      .limit(1)
-      .single();
-
-    if (!clinic) {
-      return NextResponse.json({ error: "No clinic found" }, { status: 404 });
-    }
 
     const { error } = await supabase.from("appointments").insert({
       clinic_id: clinic.id,
