@@ -79,6 +79,9 @@ export async function createVapiAssistant(clinic: {
         language: "en",
       },
       backgroundDenoisingEnabled: true,
+      artifactPlan: {
+        structuredOutputIds: ["a74b684f-a531-41e3-bcda-c1761337643a"],
+      },
     }),
   });
 
