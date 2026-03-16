@@ -40,6 +40,8 @@ export async function POST(req: NextRequest) {
       main_goal: clinic.main_goal,
     });
 
+    console.log("Created assistant ID:", assistantId);
+
     // Save assistant ID to clinic
     await supabase
       .from("clinics")
