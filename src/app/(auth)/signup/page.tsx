@@ -8,7 +8,6 @@ import Link from "next/link";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [clinicName, setClinicName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,11 +27,13 @@ export default function SignupPage() {
     }
 
     if (data.user) {
-      const { error: clinicError } = await supabase.from("clinics").insert({
-        user_id: data.user.id,
-        name: clinicName,
-        owner_name: ownerName,
-      });
+      const { error: clinicError } = await supabase
+        .from("clinics")
+        .insert({
+          user_id: data.user.id,
+          name: "My Business",
+          owner_name: ownerName,
+        });
 
       if (clinicError) {
         setError(clinicError.message);
@@ -59,7 +60,7 @@ export default function SignupPage() {
             Create your account
           </h1>
           <p className="text-[#666] text-sm">
-            Start managing your clinic with AI
+            Start managing your business with AI
           </p>
         </div>
 
@@ -84,18 +85,6 @@ export default function SignupPage() {
             </div>
             <div>
               <label className="text-sm font-medium text-[#1a1a1a] block mb-2">
-                Clinic Name
-              </label>
-              <input
-                type="text"
-                value={clinicName}
-                onChange={(e) => setClinicName(e.target.value)}
-                className="w-full px-4 py-3 border border-[#f0ebe0] rounded-xl bg-[#FFFCF7] text-sm focus:outline-none focus:ring-2 focus:ring-[#E65100]/20 focus:border-[#E65100] transition-colors"
-                placeholder="Bright Smile Dental Clinic"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-[#1a1a1a] block mb-2">
                 Email
               </label>
               <input
@@ -103,7 +92,7 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border border-[#f0ebe0] rounded-xl bg-[#FFFCF7] text-sm focus:outline-none focus:ring-2 focus:ring-[#E65100]/20 focus:border-[#E65100] transition-colors"
-                placeholder="you@clinic.com"
+                placeholder="you@business.com"
               />
             </div>
             <div>
