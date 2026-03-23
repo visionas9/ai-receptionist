@@ -27,18 +27,21 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.CheckoutSession;
-    const { userId, planName } = session.metadata!;
+    const session = event.data.object as Stripe.Checkout.Session;
+    const userId = session.metadata?.userId;
+    const planName = session.metadata?.planName;
 
-    await supabase
-      .from("clinics")
-      .update({
-        stripe_customer_id: session.customer as string,
-        stripe_subscription_id: session.subscription as string,
-        plan: planName,
-        free_minutes_remaining: 99999,
-      })
-      .eq("user_id", userId);
+    if (userId && planName) {
+      await supabase
+        .from("clinics")
+        .update({
+          stripe_customer_id: session.customer as string,
+          stripe_subscription_id: session.subscription as string,
+          plan: planName,
+          free_minutes_remaining: 99999,
+        })
+        .eq("user_id", userId);
+    }
   }
 
   if (event.type === "customer.subscription.deleted") {
