@@ -1,6 +1,8 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { Check } from "lucide-react";
 
 const plans = [
@@ -46,24 +48,29 @@ const plans = [
   },
 ];
 
-export default async function PaywallPage() {
-  const supabase = await createClient();
+export default function PaywallPage() {
+  const [loading, setLoading] = useState<string | null>(null);
+  const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const handleUpgrade = async (planName: string) => {
+    setLoading(planName);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return;
 
-  const { data: clinic } = await supabase
-    .from("clinics")
-    .select("*")
-    .eq("user_id", user.id)
-    .single();
+    const response = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user.id, planName }),
+    });
 
-  if (!clinic) redirect("/login");
-
-  // If they still have minutes, redirect to dashboard
-  if (clinic.free_minutes_remaining > 0) redirect("/dashboard");
+    const data = await response.json();
+    if (data.url) {
+      window.location.href = data.url;
+    }
+    setLoading(null);
+  };
 
   return (
     <div className="min-h-screen bg-[#FFFCF7] flex flex-col px-4 py-12">
@@ -150,13 +157,17 @@ export default async function PaywallPage() {
             </ul>
 
             <button
-              className={`w-full py-3 rounded-full text-sm font-medium transition-colors ${
+              onClick={() => handleUpgrade(plan.name)}
+              disabled={loading === plan.name}
+              className={`w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 ${
                 plan.highlight
                   ? "bg-[#E65100] text-white hover:bg-[#bf4000]"
                   : "bg-[#1a1a1a] text-white hover:bg-[#333]"
               }`}
             >
-              Upgrade to {plan.name}
+              {loading === plan.name
+                ? "Redirecting..."
+                : `Upgrade to ${plan.name}`}
             </button>
           </div>
         ))}
