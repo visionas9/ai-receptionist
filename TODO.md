@@ -18,33 +18,77 @@
 - [x] Update landing page copy for broader audience
 - [x] Mobile-responsive appointments table (card layout)
 - [x] UI polish across all pages (warm cream theme)
+- [x] Auto-provision Vapi assistant per clinic on signup
+- [x] Webhook routes to correct clinic by assistant ID
+- [x] Customize AI prompt based on onboarding answers (industry, tone, business name)
+- [x] Remove duplicate clinic name from signup
 
 ## 🔜 Soon
 
-- [ ] Auto-provision Vapi assistant per clinic on signup via Vapi API
-- [ ] Webhook routes to correct clinic based on phone number called
-- [ ] Customize AI assistant prompt based on onboarding answers (industry, tone, business name)
 - [ ] Free minutes counter in dashboard ("Free minutes remaining: X min")
-- [ ] Stripe integration for pricing page
-- [ ] Clean up test data in Supabase
+- [ ] Stripe integration — actual payments when trial ends
+- [ ] Paywall page when free minutes hit 0
+- [ ] Phone number auto-provision per clinic on signup (Twilio)
+- [ ] Link Twilio number to Vapi assistant automatically
+- [ ] Attach Booking Details structured output to auto-provisioned assistants
 
-## 🕐 Later
+## 🔐 Security
 
-- [ ] "How it works" — animated phone mockup visuals (SMS/Telegram booking flow)
-- [ ] "See how it works" links to example video
+- [ ] Webhook signature verification (confirm requests are genuinely from Vapi using VAPI_SECRET)
+- [ ] Rate limiting on all API routes
+- [ ] Input validation on all API routes
+- [ ] Review and complete all Supabase RLS policies
+- [ ] Add UPDATE and DELETE policies for appointments table
+- [ ] Add DELETE policy for clinics table
+- [ ] Verify service role can write to appointments (for webhook)
+- [ ] Verify all environment variables are correctly set in production
+
+## 📞 Phone & Number Porting
+
+- [ ] Number porting flow — business owners can port existing Polish number to Twilio
+- [ ] Register sole proprietorship (jednoosobowa działalność gospodarcza) for legal Polish Twilio numbers
+- [ ] Onboarding step for number porting ("Keep your existing number, we handle the rest")
+- [ ] Twilio → Vapi integration (link Twilio number to Vapi assistant)
+
+## ⚙️ Settings & Management
+
 - [ ] Settings page — edit assistant name, greeting, voice
 - [ ] Appointment management — cancel, reschedule, mark no-show
-- [ ] n8n integration for WhatsApp/SMS/Telegram bookings + notifications
-- [ ] Number porting support for existing business numbers
-- [ ] Multi-location support (Pro plan)
-- [ ] Voice test after onboarding ("hear your AI receptionist")
-- [ ] Paywall when free minutes hit 0
+- [ ] Email notification to owner when appointment is booked
 
-## 💡 MVP Vision
+## 🌐 Omnichannel (n8n)
+
+- [ ] n8n integration for WhatsApp bookings
+- [ ] n8n integration for SMS bookings
+- [ ] n8n integration for Telegram bookings
+- [ ] Confirmation messages via WhatsApp/SMS after booking
+- [ ] Reminder messages 24 hours before appointment
+
+## 🎨 Landing Page & Marketing
+
+- [ ] "How it works" — animated phone mockup (SMS/Telegram booking flow)
+- [ ] "See how it works" links to example video
+- [ ] Voice test after onboarding ("hear your AI receptionist")
+
+## 💳 Billing
+
+- [ ] Stripe checkout for all 3 plans
+- [ ] Webhook from Stripe to activate/deactivate subscription
+- [ ] Subscription status shown in dashboard
+- [ ] Cancel subscription flow
+
+## 📊 Analytics
+
+- [ ] Calls per day chart
+- [ ] Busiest hours breakdown
+- [ ] Conversion rate (calls → bookings)
+- [ ] Monthly booking summary
+
+## 💡 MVP Vision (saved for reference)
 
 - Omnichannel AI receptionist: phone (Vapi) + WhatsApp + SMS + Telegram
-- All bookings in one dashboard
+- All bookings in one dashboard regardless of channel
 - Each business gets their own Twilio number on signup
-- Number porting — businesses keep their existing number
-- Register sole proprietorship (jednoosobowa działalność gospodarcza) for legal Polish Twilio numbers
+- Number porting — businesses keep their existing number, patients never notice
 - Freemium: 15 free minutes on signup, then paid plans
+- Register sole proprietorship for legal Polish Twilio numbers
