@@ -14,12 +14,13 @@ interface Props {
   clinicName: string;
   userEmail: string;
   ownerName: string;
+  freeMinutes: number;
 }
 
 export default function DashboardHeader({
   clinicName,
-  userEmail,
   ownerName,
+  freeMinutes,
 }: Props) {
   const router = useRouter();
   const supabase = createClient();
@@ -28,6 +29,9 @@ export default function DashboardHeader({
     await supabase.auth.signOut();
     router.push("/login");
   };
+
+  const isLow = freeMinutes <= 5;
+  const isEmpty = freeMinutes <= 0;
 
   return (
     <header className="border-b bg-[#FFFCF7] border-[#f0ebe0] sticky top-0 z-10">
@@ -42,31 +46,54 @@ export default function DashboardHeader({
             {clinicName}
           </span>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 hover:bg-[#f0ebe0] px-3 py-1.5 rounded-full transition-colors">
-              <Avatar className="h-7 w-7">
-                <AvatarFallback className="bg-[#1a1a1a] text-white text-xs">
-                  {userEmail.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-sm text-[#666] hidden md:block">
-                {ownerName}
-              </span>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-[#FFFCF7] border-[#f0ebe0]"
+
+        <div className="flex items-center gap-4">
+          {/* Free minutes counter */}
+          <div
+            className={`hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${
+              isEmpty
+                ? "bg-red-50 border-red-100 text-red-600"
+                : isLow
+                  ? "bg-[#FFF3E0] border-[#E65100]/20 text-[#E65100]"
+                  : "bg-[#f8f4ee] border-[#f0ebe0] text-[#666]"
+            }`}
           >
-            <DropdownMenuItem
-              onClick={handleLogout}
-              className="text-red-500 cursor-pointer focus:text-red-500 focus:bg-red-50"
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isEmpty ? "bg-red-500" : isLow ? "bg-[#E65100]" : "bg-green-500"
+              }`}
+            />
+            {isEmpty
+              ? "Free minutes used up"
+              : `${Math.round(freeMinutes)} min free remaining`}
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 hover:bg-[#f0ebe0] px-3 py-1.5 rounded-full transition-colors">
+                <Avatar className="h-7 w-7">
+                  <AvatarFallback className="bg-[#1a1a1a] text-white text-xs">
+                    {ownerName ? ownerName.charAt(0).toUpperCase() : "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-sm text-[#666] hidden md:block">
+                  {ownerName}
+                </span>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-[#FFFCF7] border-[#f0ebe0]"
             >
-              Sign out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="text-red-500 cursor-pointer focus:text-red-500 focus:bg-red-50"
+              >
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </header>
   );

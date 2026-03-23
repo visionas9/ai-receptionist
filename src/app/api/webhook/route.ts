@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     const { data: clinic } = await supabase
       .from("clinics")
-      .select("id")
+      .select("id, free_minutes_remaining")
       .eq("vapi_assistant_id", assistantId)
       .single();
 
@@ -40,6 +40,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Deduct call duration from free minutes
+    const callDuration = message.durationMinutes || 0;
+    const currentMinutes = clinic.free_minutes_remaining || 0;
+    const newMinutes = Math.max(0, currentMinutes - callDuration);
+
+    await supabase
+      .from("clinics")
+      .update({ free_minutes_remaining: newMinutes })
+      .eq("id", clinic.id);
+
     const structuredOutputs = artifact.structuredOutputs || {};
     const bookingEntry = Object.values(structuredOutputs).find(
       (o: any) => o.name === "Booking Details",
@@ -47,6 +57,7 @@ export async function POST(req: NextRequest) {
     const booking = bookingEntry?.result || {};
 
     console.log("Booking:", JSON.stringify(booking, null, 2));
+    console.log(`Minutes deducted: ${callDuration}, remaining: ${newMinutes}`);
 
     const { error } = await supabase.from("appointments").insert({
       clinic_id: clinic.id,
