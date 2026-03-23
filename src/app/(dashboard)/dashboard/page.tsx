@@ -22,6 +22,7 @@ export default async function DashboardPage() {
 
   if (!clinic) redirect("/login");
   if (!clinic.onboarded) redirect("/onboarding");
+  if (clinic.free_minutes_remaining <= 0) redirect("/paywall");
 
   const { data: appointments } = await supabase
     .from("appointments")
