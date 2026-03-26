@@ -25,9 +25,9 @@
 
 ## 🔜 Soon
 
-- [ ] Free minutes counter in dashboard ("Free minutes remaining: X min")
-- [ ] Stripe integration — actual payments when trial ends
-- [ ] Paywall page when free minutes hit 0
+- [x] Free minutes counter in dashboard ("Free minutes remaining: X min")
+- [x] Stripe integration — actual payments when trial ends
+- [x] Paywall page when free minutes hit 0
 - [ ] Phone number auto-provision per clinic on signup (Twilio)
 - [ ] Link Twilio number to Vapi assistant automatically
 - [ ] Attach Booking Details structured output to auto-provisioned assistants
@@ -92,3 +92,15 @@
 - Number porting — businesses keep their existing number, patients never notice
 - Freemium: 15 free minutes on signup, then paid plans
 - Register sole proprietorship for legal Polish Twilio numbers
+
+## 🗓️ Calendar & Booking Logic
+
+- [ ] Calendar availability — check free slots before confirming booking
+- [ ] 30-min interval slot system, multiple bookings per day
+- [ ] Prevent double bookings
+
+## 🎙️ Assistant Quality
+
+- [ ] Full prompt overhaul — natural, warm, industry-specific tone
+- [ ] Upgrade voice model if needed
+- [ ] Handle edge cases: rescheduling, unclear requests, no available slots
