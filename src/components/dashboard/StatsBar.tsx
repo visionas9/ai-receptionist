@@ -1,11 +1,13 @@
 import { Appointment } from "@/types";
 import { Calendar, Clock, CheckCircle, Phone } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 interface Props {
   appointments: Appointment[];
 }
 
-export default function StatsBar({ appointments }: Props) {
+export default async function StatsBar({ appointments }: Props) {
+  const t = await getTranslations("dashboard.stats");
   const today = new Date().toISOString().split("T")[0];
 
   const todayCount = appointments.filter((a) =>
@@ -18,10 +20,10 @@ export default function StatsBar({ appointments }: Props) {
   const withRecordingCount = appointments.filter((a) => a.recording_url).length;
 
   const stats = [
-    { label: "Total Appointments", value: totalCount, icon: Calendar },
-    { label: "Booked Today", value: todayCount, icon: Clock },
-    { label: "Confirmed", value: confirmedCount, icon: CheckCircle },
-    { label: "With Recording", value: withRecordingCount, icon: Phone },
+    { label: t("total"), value: totalCount, icon: Calendar },
+    { label: t("today"), value: todayCount, icon: Clock },
+    { label: t("confirmed"), value: confirmedCount, icon: CheckCircle },
+    { label: t("withRecording"), value: withRecordingCount, icon: Phone },
   ];
 
   return (

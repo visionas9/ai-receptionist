@@ -1,0 +1,163 @@
+{
+  "landing": {
+    "nav": {
+      "features": "Features",
+      "howItWorks": "How it works",
+      "signIn": "Sign in",
+      "getStarted": "Get started"
+    },
+    "hero": {
+      "badge": "AI receptionist for service businesses",
+      "title": "Never miss a booking again",
+      "subtitle": "Receply answers your phone calls 24/7, books appointments automatically, and updates your dashboard in real time — for any service business.",
+      "ctaPrimary": "Start for free",
+      "ctaSecondary": "See how it works"
+    },
+    "preview": {
+      "label": "Bright Smile Dental Clinic — Dashboard",
+      "statTotal": "Total",
+      "statToday": "Today",
+      "statConfirmed": "Confirmed",
+      "statRecordings": "Recordings",
+      "statusConfirmed": "confirmed"
+    },
+    "featuresSection": {
+      "title": "Everything your business needs",
+      "subtitle": "From the first ring to the confirmed booking — fully automated.",
+      "phone": {
+        "title": "24/7 Phone Answering",
+        "description": "Your AI receptionist picks up every call, day or night, weekends included — for clinics, salons, barber shops, and more."
+      },
+      "booking": {
+        "title": "Instant Booking",
+        "description": "Customers book appointments naturally over the phone. No apps, no forms, no friction."
+      },
+      "realtime": {
+        "title": "Real-time Dashboard",
+        "description": "Every booking appears on your dashboard the moment the call ends. Always up to date."
+      },
+      "recordings": {
+        "title": "Call Recordings",
+        "description": "Review every call with full transcripts and audio recordings. Never lose important details."
+      },
+      "setup": {
+        "title": "Instant Setup",
+        "description": "Get your AI receptionist up and running in minutes. No technical knowledge required."
+      },
+      "secure": {
+        "title": "Secure & Private",
+        "description": "Customer data is encrypted and stored securely. Full compliance with privacy regulations."
+      }
+    },
+    "howItWorksSection": {
+      "title": "How it works",
+      "step1": {
+        "title": "Customer calls your number",
+        "description": "Your dedicated phone number rings and Receply answers immediately."
+      },
+      "step2": {
+        "title": "AI collects the details",
+        "description": "The AI receptionist naturally gathers name, date, time, and reason for visit."
+      },
+      "step3": {
+        "title": "Booking confirmed instantly",
+        "description": "The appointment is confirmed on the call and appears on your dashboard in seconds."
+      }
+    },
+    "ctaSection": {
+      "title": "Ready to automate your business?",
+      "subtitle": "Join service businesses already saving hours every week with Receply.",
+      "button": "Get started for free"
+    },
+    "footer": {
+      "copyright": "© 2026 Receply. All rights reserved."
+    }
+  },
+  "onboarding": {
+    "language": {
+      "title": "Choose your language",
+      "subtitle": "You can change this at any time.",
+      "polish": "🇵🇱 Polish",
+      "english": "🇬🇧 English"
+    },
+    "stepCounter": "{current} of {total}",
+    "continue": "Continue →",
+    "industry": {
+      "question": "What kind of business do you run?",
+      "subtitle": "We'll customize your AI receptionist based on your industry.",
+      "dental": "Dental Clinic",
+      "barber": "Barber Shop",
+      "beauty": "Beauty Salon",
+      "massage": "Massage Salon",
+      "other": "Other"
+    },
+    "name": {
+      "question": "What's your business called?",
+      "subtitle": "Your AI receptionist will introduce itself using this name.",
+      "placeholder": "e.g. Bright Smile Dental"
+    },
+    "tone": {
+      "question": "How do you talk to your customers?",
+      "subtitle": "Your AI will match this tone in every conversation.",
+      "warm": "Warm & friendly",
+      "professional": "Professional & formal",
+      "casual": "Casual & relaxed"
+    },
+    "busiestTime": {
+      "question": "When do most of your customers call?",
+      "subtitle": "This helps us optimize your assistant's availability.",
+      "mornings": "Mornings",
+      "afternoons": "Afternoons",
+      "evenings": "Evenings",
+      "allDay": "All day"
+    },
+    "mainGoal": {
+      "question": "What's your biggest headache right now?",
+      "subtitle": "We'll make sure your AI tackles this first.",
+      "missingCalls": "Missing calls",
+      "noTime": "No time to answer",
+      "afterHours": "After-hours bookings",
+      "all": "All of the above"
+    },
+    "loading": {
+      "stage1Label": "Creating your AI assistant",
+      "stage1Sub": "Training on your business preferences...",
+      "stage2Label": "Setting up your dashboard",
+      "stage2Sub": "Preparing your booking management system..."
+    }
+  },
+  "dashboard": {
+    "header": {
+      "minutesRemaining": "{n} min free remaining",
+      "minutesEmpty": "Free minutes used up",
+      "signOut": "Sign out"
+    },
+    "title": "Appointments",
+    "subtitle": "All bookings made via your AI receptionist",
+    "stats": {
+      "total": "Total Appointments",
+      "today": "Booked Today",
+      "confirmed": "Confirmed",
+      "withRecording": "With Recording"
+    },
+    "table": {
+      "patient": "Patient",
+      "phone": "Phone",
+      "date": "Date",
+      "time": "Time",
+      "reason": "Reason",
+      "status": "Status",
+      "recording": "Recording",
+      "play": "Play",
+      "playRecording": "Play recording"
+    },
+    "empty": {
+      "title": "No appointments yet",
+      "subtitle": "Appointments booked via phone will appear here automatically."
+    },
+    "dialog": {
+      "title": "Call Recording — {name}",
+      "transcript": "Transcript"
+    }
+  }
+}

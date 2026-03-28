@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Appointment } from "@/types";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Play, Phone } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 
 interface Props {
   appointments: Appointment[];
@@ -21,6 +21,7 @@ export default function AppointmentsTable({
   appointments: initial,
   clinicId,
 }: Props) {
+  const t = useTranslations("dashboard");
   const [appointments, setAppointments] = useState<Appointment[]>(initial);
   const [selectedAppointment, setSelectedAppointment] =
     useState<Appointment | null>(null);
@@ -54,13 +55,21 @@ export default function AppointmentsTable({
         <div className="w-12 h-12 bg-[#FFF3E0] rounded-2xl flex items-center justify-center mx-auto mb-4">
           <Phone className="h-6 w-6 text-[#E65100]" />
         </div>
-        <p className="font-medium text-[#1a1a1a]">No appointments yet</p>
-        <p className="text-sm text-[#666] mt-1">
-          Appointments booked via phone will appear here automatically.
-        </p>
+        <p className="font-medium text-[#1a1a1a]">{t("empty.title")}</p>
+        <p className="text-sm text-[#666] mt-1">{t("empty.subtitle")}</p>
       </div>
     );
   }
+
+  const tableHeaders = [
+    t("table.patient"),
+    t("table.phone"),
+    t("table.date"),
+    t("table.time"),
+    t("table.reason"),
+    t("table.status"),
+    t("table.recording"),
+  ];
 
   return (
     <>
@@ -68,15 +77,7 @@ export default function AppointmentsTable({
         {/* Desktop table */}
         <div className="hidden md:block bg-white border border-[#f0ebe0] rounded-2xl overflow-hidden">
           <div className="grid grid-cols-7 gap-4 px-6 py-3 border-b border-[#f0ebe0] bg-[#f8f4ee]">
-            {[
-              "Patient",
-              "Phone",
-              "Date",
-              "Time",
-              "Reason",
-              "Status",
-              "Recording",
-            ].map((h) => (
+            {tableHeaders.map((h) => (
               <p key={h} className="text-xs font-medium text-[#666]">
                 {h}
               </p>
@@ -115,7 +116,7 @@ export default function AppointmentsTable({
                       className="flex items-center gap-1.5 text-xs text-[#E65100] hover:text-[#bf4000] font-medium transition-colors"
                     >
                       <Play className="h-3.5 w-3.5" />
-                      Play
+                      {t("table.play")}
                     </button>
                   ) : (
                     <span className="text-[#666] text-sm">—</span>
@@ -144,25 +145,25 @@ export default function AppointmentsTable({
 
               <div className="grid grid-cols-2 gap-y-3">
                 <div>
-                  <p className="text-xs text-[#999] mb-1">Date</p>
+                  <p className="text-xs text-[#999] mb-1">{t("table.date")}</p>
                   <p className="text-sm font-medium text-[#1a1a1a]">
                     {appointment.appointment_date ?? "—"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#999] mb-1">Time</p>
+                  <p className="text-xs text-[#999] mb-1">{t("table.time")}</p>
                   <p className="text-sm font-medium text-[#1a1a1a]">
                     {appointment.appointment_time ?? "—"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#999] mb-1">Reason</p>
+                  <p className="text-xs text-[#999] mb-1">{t("table.reason")}</p>
                   <p className="text-sm font-medium text-[#1a1a1a]">
                     {appointment.reason ?? "—"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#999] mb-1">Phone</p>
+                  <p className="text-xs text-[#999] mb-1">{t("table.phone")}</p>
                   <p className="text-sm font-medium text-[#1a1a1a]">
                     {appointment.patient_phone ?? "—"}
                   </p>
@@ -175,7 +176,7 @@ export default function AppointmentsTable({
                   className="flex items-center gap-2 text-xs text-[#E65100] font-medium bg-[#FFF3E0] hover:bg-[#ffe0b2] px-3 py-2 rounded-xl transition-colors w-full justify-center"
                 >
                   <Play className="h-3.5 w-3.5" />
-                  Play recording
+                  {t("table.playRecording")}
                 </button>
               )}
             </div>
@@ -189,7 +190,7 @@ export default function AppointmentsTable({
           <DialogContent className="max-w-lg bg-[#FFFCF7] border-[#f0ebe0]">
             <DialogHeader>
               <DialogTitle className="text-[#1a1a1a]">
-                Call Recording — {selectedAppointment?.patient_name}
+                {t("dialog.title", { name: selectedAppointment?.patient_name ?? "" })}
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
@@ -204,7 +205,7 @@ export default function AppointmentsTable({
               {selectedAppointment?.transcript && (
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-[#1a1a1a]">
-                    Transcript
+                    {t("dialog.transcript")}
                   </p>
                   <p className="text-sm text-[#666] bg-[#f8f4ee] border border-[#f0ebe0] p-4 rounded-xl whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto">
                     {selectedAppointment.transcript}

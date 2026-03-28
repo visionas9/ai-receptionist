@@ -46,7 +46,9 @@ export async function createVapiAssistant(clinic: {
   tone: string | null;
   busiest_time: string | null;
   main_goal: string | null;
+  language?: string | null;
 }) {
+  // TODO: switch assistant prompt to Polish when language === 'pl'
   const systemPrompt = buildSystemPrompt(clinic);
 
   const response = await fetch(`${VAPI_API_URL}/assistant`, {
