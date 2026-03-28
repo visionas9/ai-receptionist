@@ -15,9 +15,14 @@ const priceMap: Record<string, string> = {
   Pro: process.env.STRIPE_PRICE_PRO!,
 };
 
+const stripeLocaleMap: Record<string, Stripe.Checkout.SessionCreateParams.Locale> = {
+  pl: "pl",
+  en: "en",
+};
+
 export async function POST(req: NextRequest) {
   try {
-    const { userId, planName } = await req.json();
+    const { userId, planName, language } = await req.json();
 
     if (!userId || !planName) {
       return NextResponse.json(
@@ -41,9 +46,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Clinic not found" }, { status: 404 });
     }
 
+    // Resolve locale: prefer request body language, fall back to clinic.language, default to 'pl'
+    const resolvedLanguage = language ?? clinic.language ?? "pl";
+    const stripeLocale = stripeLocaleMap[resolvedLanguage] ?? "pl";
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
+      locale: stripeLocale,
       line_items: [
         {
           price: priceId,

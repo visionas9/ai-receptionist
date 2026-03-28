@@ -126,9 +126,75 @@
       "stage2Sub": "Preparing your booking management system..."
     }
   },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your clinic dashboard",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@clinic.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "signingIn": "Signing in...",
+      "button": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Start managing your business with AI",
+      "nameLabel": "Your Name",
+      "namePlaceholder": "Dr. John Smith",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@business.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "creating": "Creating your account...",
+      "button": "Create account",
+      "alreadyHaveAccount": "Already have an account?",
+      "signInLink": "Sign in"
+    }
+  },
+  "pricing": {
+    "readyBadge": "Your AI receptionist is ready",
+    "title": "Choose your plan",
+    "subtitle": "Start with 15 free minutes. No credit card required. Cancel anytime.",
+    "month": "/month",
+    "mostPopular": "Most popular",
+    "getStarted": "Get started",
+    "settingUp": "Setting up...",
+    "allPlansNote": "All plans include {highlight}. Start with 15 free minutes, no credit card required.",
+    "allPlansHighlight": "unlimited AI calls",
+    "skipForNow": "Skip for now, explore the dashboard",
+    "starter": {
+      "description": "Perfect for small businesses just getting started.",
+      "f1": "Unlimited AI phone calls",
+      "f2": "Real-time booking dashboard",
+      "f3": "Call recordings & transcripts",
+      "f4": "Email support"
+    },
+    "growth": {
+      "description": "For growing businesses that want more channels.",
+      "f1": "Everything in Starter",
+      "f2": "WhatsApp & SMS bookings",
+      "f3": "Telegram bookings",
+      "f4": "Number porting support",
+      "f5": "Custom AI voice & tone",
+      "f6": "Priority support"
+    },
+    "pro": {
+      "description": "For established businesses that want it all.",
+      "f1": "Everything in Growth",
+      "f2": "Multiple locations",
+      "f3": "Advanced analytics",
+      "f4": "Custom integrations",
+      "f5": "Dedicated account manager",
+      "f6": "SLA guarantee"
+    }
+  },
   "dashboard": {
     "header": {
       "minutesRemaining": "{n} min free remaining",
+      "minutesUnlimited": "Unlimited minutes",
       "minutesEmpty": "Free minutes used up",
       "signOut": "Sign out"
     },

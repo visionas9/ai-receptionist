@@ -8,18 +8,20 @@ interface Props {
 }
 
 /**
- * Reads the language preference saved in the clinic's Supabase record
- * and syncs it to the active locale cookie on dashboard load.
+ * Syncs the user's language preference to the active locale cookie on load.
+ * Priority: clinic.language from Supabase → localStorage "locale" → no-op.
+ * Falls back to localStorage so it works even before the Supabase migration runs.
  */
 export default function LocaleSyncer({ savedLocale }: Props) {
   const currentLocale = useLocale();
 
   useEffect(() => {
-    if (!savedLocale) return;
-    if (savedLocale === currentLocale) return;
+    const target = savedLocale ?? localStorage.getItem("locale");
+    if (!target) return;
+    if (target === currentLocale) return;
 
-    document.cookie = `NEXT_LOCALE=${savedLocale};path=/;max-age=31536000;SameSite=Lax`;
-    localStorage.setItem("locale", savedLocale);
+    document.cookie = `NEXT_LOCALE=${target};path=/;max-age=31536000;SameSite=Lax`;
+    localStorage.setItem("locale", target);
     window.location.reload();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

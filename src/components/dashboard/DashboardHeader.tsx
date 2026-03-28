@@ -69,7 +69,9 @@ export default function DashboardHeader({
             />
             {isEmpty
               ? t("minutesEmpty")
-              : t("minutesRemaining", { n: Math.round(freeMinutes) })}
+              : isUnlimited
+                ? t("minutesUnlimited")
+                : t("minutesRemaining", { n: Math.round(freeMinutes) })}
           </div>
 
           <LanguageSwitcher />

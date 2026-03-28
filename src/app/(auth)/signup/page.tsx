@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function SignupPage() {
+  const t = useTranslations("auth.signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ownerName, setOwnerName] = useState("");
@@ -57,11 +59,9 @@ export default function SignupPage() {
             Receply
           </Link>
           <h1 className="font-display text-3xl font-black text-[#1a1a1a] mt-6 mb-2">
-            Create your account
+            {t("title")}
           </h1>
-          <p className="text-[#666] text-sm">
-            Start managing your business with AI
-          </p>
+          <p className="text-[#666] text-sm">{t("subtitle")}</p>
         </div>
 
         <div className="bg-white border border-[#f0ebe0] rounded-2xl p-8 shadow-sm">
@@ -73,31 +73,31 @@ export default function SignupPage() {
           <div className="space-y-5">
             <div>
               <label className="text-sm font-medium text-[#1a1a1a] block mb-2">
-                Your Name
+                {t("nameLabel")}
               </label>
               <input
                 type="text"
                 value={ownerName}
                 onChange={(e) => setOwnerName(e.target.value)}
                 className="w-full px-4 py-3 border border-[#f0ebe0] rounded-xl bg-[#FFFCF7] text-sm focus:outline-none focus:ring-2 focus:ring-[#E65100]/20 focus:border-[#E65100] transition-colors"
-                placeholder="Dr. John Smith"
+                placeholder={t("namePlaceholder")}
               />
             </div>
             <div>
               <label className="text-sm font-medium text-[#1a1a1a] block mb-2">
-                Email
+                {t("emailLabel")}
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border border-[#f0ebe0] rounded-xl bg-[#FFFCF7] text-sm focus:outline-none focus:ring-2 focus:ring-[#E65100]/20 focus:border-[#E65100] transition-colors"
-                placeholder="you@business.com"
+                placeholder={t("emailPlaceholder")}
               />
             </div>
             <div>
               <label className="text-sm font-medium text-[#1a1a1a] block mb-2">
-                Password
+                {t("passwordLabel")}
               </label>
               <input
                 type="password"
@@ -105,7 +105,7 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSignup()}
                 className="w-full px-4 py-3 border border-[#f0ebe0] rounded-xl bg-[#FFFCF7] text-sm focus:outline-none focus:ring-2 focus:ring-[#E65100]/20 focus:border-[#E65100] transition-colors"
-                placeholder="••••••••"
+                placeholder={t("passwordPlaceholder")}
               />
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function SignupPage() {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                 />
               </svg>
-              Creating your account...
+              {t("creating")}
             </div>
           ) : (
             <button
@@ -140,17 +140,17 @@ export default function SignupPage() {
               disabled={loading}
               className="w-full mt-6 bg-[#1a1a1a] text-white py-3 rounded-full text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
             >
-              Create account
+              {t("button")}
             </button>
           )}
 
           <p className="text-center text-sm text-[#666] mt-6">
-            Already have an account?{" "}
+            {t("alreadyHaveAccount")}{" "}
             <Link
               href="/login"
               className="text-[#E65100] hover:underline font-medium"
             >
-              Sign in
+              {t("signInLink")}
             </Link>
           </p>
         </div>

@@ -140,9 +140,75 @@ const pl = {
       stage2Sub: "Konfiguruję system zarządzania rezerwacjami...", // TODO: native review
     },
   },
+  auth: {
+    login: {
+      title: "Witaj z powrotem", // TODO: native review
+      subtitle: "Zaloguj się do swojego panelu", // TODO: native review
+      emailLabel: "E-mail", // TODO: native review
+      emailPlaceholder: "ty@klinika.pl", // TODO: native review
+      passwordLabel: "Hasło", // TODO: native review
+      passwordPlaceholder: "••••••••", // TODO: native review
+      signingIn: "Logowanie...", // TODO: native review
+      button: "Zaloguj się", // TODO: native review
+      noAccount: "Nie masz jeszcze konta?", // TODO: native review
+      signUpLink: "Zarejestruj się", // TODO: native review
+    },
+    signup: {
+      title: "Utwórz konto", // TODO: native review
+      subtitle: "Zacznij zarządzać swoją firmą z pomocą AI", // TODO: native review
+      nameLabel: "Twoje imię i nazwisko", // TODO: native review
+      namePlaceholder: "Dr Jan Kowalski", // TODO: native review
+      emailLabel: "E-mail", // TODO: native review
+      emailPlaceholder: "ty@firma.pl", // TODO: native review
+      passwordLabel: "Hasło", // TODO: native review
+      passwordPlaceholder: "••••••••", // TODO: native review
+      creating: "Tworzę konto...", // TODO: native review
+      button: "Utwórz konto", // TODO: native review
+      alreadyHaveAccount: "Masz już konto?", // TODO: native review
+      signInLink: "Zaloguj się", // TODO: native review
+    },
+  },
+  pricing: {
+    readyBadge: "Twój asystent AI jest gotowy", // TODO: native review
+    title: "Wybierz plan", // TODO: native review
+    subtitle: "Zacznij z 15 darmowymi minutami. Bez karty. Możesz anulować kiedy chcesz.", // TODO: native review
+    month: "/miesiąc", // TODO: native review
+    mostPopular: "Najpopularniejszy", // TODO: native review
+    getStarted: "Zacznij teraz", // TODO: native review
+    settingUp: "Konfiguracja...", // TODO: native review
+    allPlansNote: "Wszystkie plany zawierają {highlight}. Zacznij z 15 darmowymi minutami, bez karty.", // TODO: native review
+    allPlansHighlight: "nielimitowane połączenia AI", // TODO: native review
+    skipForNow: "Pomiń na razie, zajrzyj do panelu", // TODO: native review
+    starter: {
+      description: "Idealny dla małych firm stawiających pierwsze kroki.", // TODO: native review
+      f1: "Nielimitowane połączenia AI", // TODO: native review
+      f2: "Panel rezerwacji w czasie rzeczywistym", // TODO: native review
+      f3: "Nagrania i transkrypty rozmów", // TODO: native review
+      f4: "Wsparcie e-mailowe", // TODO: native review
+    },
+    growth: {
+      description: "Dla rozwijających się firm, które chcą więcej kanałów.", // TODO: native review
+      f1: "Wszystko ze Startera", // TODO: native review
+      f2: "Rezerwacje przez WhatsApp i SMS", // TODO: native review
+      f3: "Rezerwacje przez Telegram", // TODO: native review
+      f4: "Przeniesienie numeru", // TODO: native review
+      f5: "Własny głos i ton AI", // TODO: native review
+      f6: "Wsparcie priorytetowe", // TODO: native review
+    },
+    pro: {
+      description: "Dla dojrzałych firm, które chcą mieć wszystko.", // TODO: native review
+      f1: "Wszystko z Growth", // TODO: native review
+      f2: "Wiele lokalizacji", // TODO: native review
+      f3: "Zaawansowana analityka", // TODO: native review
+      f4: "Własne integracje", // TODO: native review
+      f5: "Dedykowany opiekun konta", // TODO: native review
+      f6: "Gwarancja SLA", // TODO: native review
+    },
+  },
   dashboard: {
     header: {
       minutesRemaining: "pozostało {n} min bezpłatnie", // TODO: native review
+      minutesUnlimited: "Nielimitowane minuty", // TODO: native review
       minutesEmpty: "Darmowe minuty się skończyły", // TODO: native review
       signOut: "Wyloguj się", // TODO: native review
     },
