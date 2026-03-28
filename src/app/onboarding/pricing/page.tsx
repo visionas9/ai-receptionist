@@ -54,6 +54,29 @@ const plans = [
 export default function PricingPage() {
   const router = useRouter();
   const [selecting, setSelecting] = useState(false);
+
+  const provisionAndOnboard = async (
+    supabase: ReturnType<typeof createClient>,
+    userId: string
+  ) => {
+    await supabase
+      .from("clinics")
+      .update({ onboarded: true })
+      .eq("user_id", userId);
+
+    try {
+      const response = await fetch("/api/provision", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      const data = await response.json();
+      console.log("Assistant provisioned:", data.assistantId);
+    } catch (err) {
+      console.error("Provisioning failed:", err);
+    }
+  };
+
   const handleSelect = async (planName: string) => {
     setSelecting(true);
     const supabase = createClient();
@@ -62,25 +85,33 @@ export default function PricingPage() {
     } = await supabase.auth.getUser();
 
     if (user) {
-      // Mark as onboarded
-      await supabase
-        .from("clinics")
-        .update({ onboarded: true })
-        .eq("user_id", user.id);
+      await provisionAndOnboard(supabase, user.id);
 
-      // Provision Vapi assistant
-      try {
-        const response = await fetch("/api/provision", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user.id }),
-        });
-        const data = await response.json();
-        console.log("Assistant provisioned:", data.assistantId);
-      } catch (err) {
-        console.error("Provisioning failed:", err);
-        // Don't block navigation if provisioning fails
+      // Redirect to Stripe checkout for the selected plan
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, planName }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+        return;
       }
+    }
+
+    router.push("/dashboard");
+  };
+
+  const handleSkip = async () => {
+    setSelecting(true);
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      await provisionAndOnboard(supabase, user.id);
     }
 
     router.push("/dashboard");
@@ -190,7 +221,7 @@ export default function PricingPage() {
       </p>
 
       <button
-        onClick={() => handleSelect("free")}
+        onClick={handleSkip}
         className="block mx-auto mt-4 text-sm text-[#999] hover:text-[#666] transition-colors underline underline-offset-2"
       >
         Skip for now, explore the dashboard
