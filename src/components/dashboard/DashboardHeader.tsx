@@ -9,6 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface Props {
   clinicName: string;
@@ -22,6 +24,7 @@ export default function DashboardHeader({
   ownerName,
   freeMinutes,
 }: Props) {
+  const t = useTranslations("dashboard.header");
   const router = useRouter();
   const supabase = createClient();
 
@@ -65,11 +68,11 @@ export default function DashboardHeader({
               }`}
             />
             {isEmpty
-              ? "Free minutes used up"
-              : isUnlimited
-                ? "Unlimited minutes"
-                : `${Math.round(freeMinutes)} min free remaining`}
+              ? t("minutesEmpty")
+              : t("minutesRemaining", { n: Math.round(freeMinutes) })}
           </div>
+
+          <LanguageSwitcher />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -92,7 +95,7 @@ export default function DashboardHeader({
                 onClick={handleLogout}
                 className="text-red-500 cursor-pointer focus:text-red-500 focus:bg-red-50"
               >
-                Sign out
+                {t("signOut")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

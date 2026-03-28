@@ -2,24 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-const stages = [
-  {
-    label: "Creating your AI assistant",
-    sublabel: "Training on your business preferences...",
-    duration: 3000,
-  },
-  {
-    label: "Setting up your dashboard",
-    sublabel: "Preparing your booking management system...",
-    duration: 2500,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function OnboardingLoadingPage() {
+  const t = useTranslations("onboarding.loading");
   const [stageIndex, setStageIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
+
+  const stages = [
+    {
+      label: t("stage1Label"),
+      sublabel: t("stage1Sub"),
+      duration: 3000,
+    },
+    {
+      label: t("stage2Label"),
+      sublabel: t("stage2Sub"),
+      duration: 2500,
+    },
+  ];
 
   useEffect(() => {
     const stage = stages[stageIndex];

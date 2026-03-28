@@ -10,73 +10,19 @@ import {
   Shield,
   BarChart3,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
-const features = [
-  {
-    icon: Phone,
-    title: "24/7 Phone Answering",
-    description:
-      "Your AI receptionist picks up every call, day or night, weekends included — for clinics, salons, barber shops, and more.",
-  },
-  {
-    icon: Calendar,
-    title: "Instant Booking",
-    description:
-      "Customers book appointments naturally over the phone. No apps, no forms, no friction.",
-  },
-  {
-    icon: Clock,
-    title: "Real-time Dashboard",
-    description:
-      "Every booking appears on your dashboard the moment the call ends. Always up to date.",
-  },
-  {
-    icon: BarChart3,
-    title: "Call Recordings",
-    description:
-      "Review every call with full transcripts and audio recordings. Never lose important details.",
-  },
-  {
-    icon: Zap,
-    title: "Instant Setup",
-    description:
-      "Get your AI receptionist up and running in minutes. No technical knowledge required.",
-  },
-  {
-    icon: Shield,
-    title: "Secure & Private",
-    description:
-      "Customer data is encrypted and stored securely. Full compliance with privacy regulations.",
-  },
-];
+const featureKeys = [
+  { key: "phone", Icon: Phone },
+  { key: "booking", Icon: Calendar },
+  { key: "realtime", Icon: Clock },
+  { key: "recordings", Icon: BarChart3 },
+  { key: "setup", Icon: Zap },
+  { key: "secure", Icon: Shield },
+] as const;
 
-const steps = [
-  {
-    number: "01",
-    title: "Customer calls your number",
-    description:
-      "Your dedicated phone number rings and Receply answers immediately.",
-  },
-  {
-    number: "02",
-    title: "AI collects the details",
-    description:
-      "The AI receptionist naturally gathers name, date, time, and reason for visit.",
-  },
-  {
-    number: "03",
-    title: "Booking confirmed instantly",
-    description:
-      "The appointment is confirmed on the call and appears on your dashboard in seconds.",
-  },
-];
-
-const stats = [
-  { value: "12", label: "Total" },
-  { value: "3", label: "Today" },
-  { value: "12", label: "Confirmed" },
-  { value: "8", label: "Recordings" },
-];
+const stepKeys = ["step1", "step2", "step3"] as const;
 
 const rows = [
   {
@@ -103,6 +49,15 @@ const rows = [
 ];
 
 export default function LandingPage() {
+  const t = useTranslations("landing");
+
+  const stats = [
+    { value: "12", label: t("preview.statTotal") },
+    { value: "3", label: t("preview.statToday") },
+    { value: "12", label: t("preview.statConfirmed") },
+    { value: "8", label: t("preview.statRecordings") },
+  ];
+
   return (
     <div
       className="min-h-screen bg-[#FFFCF7] text-[#1a1a1a]"
@@ -138,7 +93,7 @@ export default function LandingPage() {
               }
               className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
             >
-              Features
+              {t("nav.features")}
             </button>
             <button
               onClick={() =>
@@ -148,21 +103,22 @@ export default function LandingPage() {
               }
               className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
             >
-              How it works
+              {t("nav.howItWorks")}
             </button>
           </nav>
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <Link
               href="/login"
               className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
             >
-              Sign in
+              {t("nav.signIn")}
             </Link>
             <Link
               href="/signup"
               className="text-sm bg-[#1a1a1a] text-white px-4 py-2 rounded-full hover:bg-[#333] transition-colors"
             >
-              Get started
+              {t("nav.getStarted")}
             </Link>
           </div>
         </div>
@@ -172,22 +128,20 @@ export default function LandingPage() {
       <section className="max-w-6xl mx-auto px-4 md:px-8 pt-20 md:pt-32 pb-20 text-center">
         <div className="animate-fade-up inline-flex items-center gap-2 bg-[#FFF3E0] text-[#E65100] text-sm font-medium px-4 py-1.5 rounded-full mb-8">
           <span className="w-2 h-2 bg-[#E65100] rounded-full animate-pulse" />
-          AI receptionist for service businesses
+          {t("hero.badge")}
         </div>
         <h1 className="animate-fade-up delay-1 font-display text-5xl md:text-7xl font-black leading-tight mb-6 text-[#1a1a1a]">
-          Never miss a booking again
+          {t("hero.title")}
         </h1>
         <p className="animate-fade-up delay-2 text-lg md:text-xl text-[#666] max-w-2xl mx-auto mb-10 leading-relaxed">
-          Receply answers your phone calls 24/7, books appointments
-          automatically, and updates your dashboard in real time — for any
-          service business.
+          {t("hero.subtitle")}
         </p>
         <div className="animate-fade-up delay-3 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/signup"
             className="flex items-center gap-2 bg-[#1a1a1a] text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-[#333] transition-colors"
           >
-            Start for free
+            {t("hero.ctaPrimary")}
             <ChevronRight className="h-4 w-4" />
           </Link>
           <button
@@ -198,7 +152,7 @@ export default function LandingPage() {
             }
             className="flex items-center gap-2 text-sm text-[#666] hover:text-[#1a1a1a] transition-colors px-8 py-4"
           >
-            See how it works
+            {t("hero.ctaSecondary")}
           </button>
         </div>
 
@@ -209,7 +163,7 @@ export default function LandingPage() {
             <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
             <div className="w-3 h-3 rounded-full bg-[#28c840]" />
             <span className="ml-3 text-xs text-[#999]">
-              Bright Smile Dental Clinic — Dashboard
+              {t("preview.label")}
             </span>
           </div>
           <div className="bg-white p-6">
@@ -245,7 +199,7 @@ export default function LandingPage() {
                     {row.reason}
                   </span>
                   <span className="text-xs bg-[#E8F5E9] text-[#2E7D32] px-2 py-0.5 rounded-full">
-                    confirmed
+                    {t("preview.statusConfirmed")}
                   </span>
                 </div>
               ))}
@@ -259,26 +213,26 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-black mb-4">
-              Everything your business needs
+              {t("featuresSection.title")}
             </h2>
             <p className="text-[#666] text-lg max-w-xl mx-auto">
-              From the first ring to the confirmed booking — fully automated.
+              {t("featuresSection.subtitle")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, i) => (
+            {featureKeys.map(({ key, Icon }) => (
               <div
-                key={i}
+                key={key}
                 className="bg-[#FFFCF7] rounded-2xl p-6 border border-[#f0ebe0] hover:shadow-lg hover:shadow-[#00000008] transition-shadow"
               >
                 <div className="w-10 h-10 bg-[#FFF3E0] rounded-xl flex items-center justify-center mb-4">
-                  <feature.icon className="h-5 w-5 text-[#E65100]" />
+                  <Icon className="h-5 w-5 text-[#E65100]" />
                 </div>
                 <h3 className="font-semibold text-[#1a1a1a] mb-2">
-                  {feature.title}
+                  {t(`featuresSection.${key}.title`)}
                 </h3>
                 <p className="text-sm text-[#666] leading-relaxed">
-                  {feature.description}
+                  {t(`featuresSection.${key}.description`)}
                 </p>
               </div>
             ))}
@@ -291,20 +245,20 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-black mb-4">
-              How it works
+              {t("howItWorksSection.title")}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {steps.map((step, i) => (
-              <div key={i} className="text-center">
+            {stepKeys.map((key, i) => (
+              <div key={key} className="text-center">
                 <div className="font-display text-6xl font-black text-[#f0ebe0] mb-4">
-                  {step.number}
+                  {String(i + 1).padStart(2, "0")}
                 </div>
                 <h3 className="font-semibold text-[#1a1a1a] text-lg mb-2">
-                  {step.title}
+                  {t(`howItWorksSection.${key}.title`)}
                 </h3>
                 <p className="text-[#666] text-sm leading-relaxed">
-                  {step.description}
+                  {t(`howItWorksSection.${key}.description`)}
                 </p>
               </div>
             ))}
@@ -316,17 +270,16 @@ export default function LandingPage() {
       <section className="bg-[#1a1a1a] py-20 md:py-32">
         <div className="max-w-6xl mx-auto px-4 md:px-8 text-center">
           <h2 className="font-display text-4xl md:text-5xl font-black text-white mb-4">
-            Ready to automate your business?
+            {t("ctaSection.title")}
           </h2>
           <p className="text-[#999] text-lg mb-10">
-            Join service businesses already saving hours every week with
-            Receply.
+            {t("ctaSection.subtitle")}
           </p>
           <Link
             href="/signup"
             className="inline-flex items-center gap-2 bg-white text-[#1a1a1a] px-8 py-4 rounded-full text-sm font-medium hover:bg-[#f0f0f0] transition-colors"
           >
-            Get started for free
+            {t("ctaSection.button")}
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
@@ -336,9 +289,7 @@ export default function LandingPage() {
       <footer className="bg-[#1a1a1a] border-t border-[#333] py-8">
         <div className="max-w-6xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="font-display text-white font-bold">Receply</span>
-          <p className="text-[#666] text-sm">
-            © 2026 Receply. All rights reserved.
-          </p>
+          <p className="text-[#666] text-sm">{t("footer.copyright")}</p>
         </div>
       </footer>
     </div>

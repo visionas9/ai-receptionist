@@ -3,6 +3,7 @@ export interface Clinic {
   user_id: string;
   name: string;
   owner_name: string | null;
+  language: string | null;
   created_at: string;
 }
 
