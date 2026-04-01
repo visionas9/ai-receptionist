@@ -56,6 +56,39 @@ export async function POST(req: NextRequest) {
     ) as any;
     const booking = bookingEntry?.result || {};
 
+    // Guard 1: skip ghost bookings with null or empty name
+    const customerName = booking.customerName;
+    if (!customerName ||
+        customerName === "null" ||
+        customerName.trim() === "") {
+      console.log("Skipping ghost booking: customerName is null or empty");
+      return NextResponse.json({ received: true });
+    }
+
+    // Guard 2: skip bookings with missing or placeholder date
+    const appointmentDate = booking.appointmentDate;
+    const isInvalidDate =
+      !appointmentDate ||
+      appointmentDate === "null" ||
+      appointmentDate === "2024-01-01" ||
+      appointmentDate === "1970-01-01";
+
+    if (isInvalidDate) {
+      console.log("Skipping ghost booking: invalid date", appointmentDate);
+      return NextResponse.json({ received: true });
+    }
+
+    // Guard 3: fix wrong year on valid dates
+    const parsedDate = new Date(appointmentDate);
+    const currentYear = new Date().getFullYear();
+    if (parsedDate.getFullYear() < currentYear) {
+      const corrected = appointmentDate.replace(
+        /^\d{4}/,
+        String(currentYear)
+      );
+      booking.appointmentDate = corrected;
+    }
+
     console.log("Booking:", JSON.stringify(booking, null, 2));
     console.log(`Minutes deducted: ${callDuration}, remaining: ${newMinutes}`);
 
