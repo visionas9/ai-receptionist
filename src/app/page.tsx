@@ -92,7 +92,7 @@ export default function LandingPage() {
                   .getElementById("features")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
-              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
+              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors cursor-pointer"
             >
               {t("nav.features")}
             </button>
@@ -102,7 +102,7 @@ export default function LandingPage() {
                   .getElementById("how")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
-              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
+              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors cursor-pointer"
             >
               {t("nav.howItWorks")}
             </button>
@@ -112,7 +112,7 @@ export default function LandingPage() {
                   .getElementById("pricing")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
-              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
+              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors cursor-pointer"
             >
               {t("nav.pricing")}
             </button>
@@ -121,7 +121,7 @@ export default function LandingPage() {
             <LanguageSwitcher />
             <Link
               href="/login"
-              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
+              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors cursor-pointer"
             >
               {t("nav.signIn")}
             </Link>
@@ -161,7 +161,7 @@ export default function LandingPage() {
                 .getElementById("how")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="flex items-center gap-2 text-sm text-[#666] hover:text-[#1a1a1a] transition-colors px-8 py-4"
+            className="flex items-center gap-2 text-sm text-[#666] hover:text-[#1a1a1a] transition-colors px-8 py-4 cursor-pointer"
           >
             {t("hero.ctaSecondary")}
           </button>

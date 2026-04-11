@@ -75,7 +75,7 @@ export default function DashboardHeader({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 hover:bg-[#f0ebe0] px-3 py-1.5 rounded-full transition-colors">
+              <button className="flex items-center gap-2 hover:bg-[#f0ebe0] px-3 py-1.5 rounded-full transition-colors cursor-pointer">
                 <Avatar className="h-7 w-7">
                   <AvatarFallback className="bg-[#1a1a1a] text-white text-xs">
                     {ownerName ? ownerName.charAt(0).toUpperCase() : "U"}

@@ -140,7 +140,7 @@ export default function PricingPage() {
           <button
             onClick={() => handleSelect(plan.name)}
             disabled={selecting}
-            className="w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 bg-[#E65100] text-white hover:bg-[#bf4000]"
+            className="w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer bg-[#E65100] text-white hover:bg-[#bf4000]"
           >
             {selecting ? "Setting up..." : plan.cta}
           </button>
@@ -152,7 +152,7 @@ export default function PricingPage() {
 
       <button
         onClick={handleSkip}
-        className="block mx-auto mt-4 text-sm text-[#999] hover:text-[#666] transition-colors underline underline-offset-2"
+        className="block mx-auto mt-4 text-sm text-[#999] hover:text-[#666] transition-colors underline underline-offset-2 cursor-pointer"
       >
         Skip for now, explore the dashboard
       </button>
