@@ -45,13 +45,13 @@
 - [x] Welcome to Pro banner on dashboard after payment
 - [x] Cursor pointer on all interactive buttons
 - [x] End to end test passed — call → booking → email ✅
+- [x] Polish translations reviewed by native speaker
+- [x] Subscription status shown in dashboard
+- [x] Language toggle regression — stays switched after reload
+- [x] Test Stripe payment → correct dashboard redirect on production
 
 ## 🧪 Live Test Prep (Remaining)
 
-- [ ] Polish translations reviewed by native speaker
-- [ ] Subscription status shown in dashboard
-- [ ] Language toggle regression — stays switched after reload
-- [ ] Test Stripe payment → correct dashboard redirect on production
 - [ ] 1-week self-test with real calls
 
 ## 🔜 Soon (Post Live Test)
