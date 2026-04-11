@@ -33,8 +33,7 @@ export default function DashboardHeader({
     router.push("/login");
   };
 
-  const isUnlimited = freeMinutes >= 99999;
-  const isLow = !isUnlimited && freeMinutes <= 5;
+  const isLow = freeMinutes > 0 && freeMinutes <= 5;
   const isEmpty = freeMinutes <= 0;
 
   return (
@@ -76,7 +75,7 @@ export default function DashboardHeader({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 hover:bg-[#f0ebe0] px-3 py-1.5 rounded-full transition-colors">
+              <button className="flex items-center gap-2 hover:bg-[#f0ebe0] px-3 py-1.5 rounded-full transition-colors cursor-pointer">
                 <Avatar className="h-7 w-7">
                   <AvatarFallback className="bg-[#1a1a1a] text-white text-xs">
                     {ownerName ? ownerName.charAt(0).toUpperCase() : "U"}

@@ -5,51 +5,20 @@ import { Check } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 
-const plans = [
-  {
-    name: "Starter",
-    price: "29",
-    description: "Perfect for small businesses just getting started.",
-    features: [
-      "Unlimited AI phone calls",
-      "Real-time booking dashboard",
-      "Call recordings & transcripts",
-      "Email support",
-    ],
-    cta: "Get started",
-    highlight: false,
-  },
-  {
-    name: "Growth",
-    price: "79",
-    description: "For growing businesses that want more channels.",
-    features: [
-      "Everything in Starter",
-      "WhatsApp & SMS bookings",
-      "Telegram bookings",
-      "Number porting support",
-      "Custom AI voice & tone",
-      "Priority support",
-    ],
-    cta: "Get started",
-    highlight: true,
-  },
-  {
-    name: "Pro",
-    price: "149",
-    description: "For established businesses that want it all.",
-    features: [
-      "Everything in Growth",
-      "Multiple locations",
-      "Advanced analytics",
-      "Custom integrations",
-      "Dedicated account manager",
-      "SLA guarantee",
-    ],
-    cta: "Get started",
-    highlight: false,
-  },
-];
+const plan = {
+  name: "Pro",
+  price: "799",
+  currency: "PLN",
+  description: "Everything you need to automate your reception.",
+  features: [
+    "1,500 minutes per month",
+    "Unlimited AI phone calls",
+    "Real-time booking dashboard",
+    "Call recordings & transcripts",
+    "Priority support",
+  ],
+  cta: "Get started",
+};
 
 export default function PricingPage() {
   const router = useRouter();
@@ -138,91 +107,52 @@ export default function PricingPage() {
           Your AI receptionist is ready
         </div>
         <h1 className="font-display text-4xl md:text-5xl font-black text-[#1a1a1a] mb-4">
-          Choose your plan
+          Start your subscription
         </h1>
         <p className="text-[#666] max-w-md mx-auto">
           Start with 15 free minutes. No credit card required. Cancel anytime.
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6">
-        {plans.map((plan, i) => (
-          <div
-            key={plan.name}
-            className={`fade-up delay-${i + 1} rounded-2xl p-6 flex flex-col ${
-              plan.highlight
-                ? "bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]"
-                : "bg-white border border-[#f0ebe0]"
-            }`}
-          >
-            {plan.highlight && (
-              <div className="text-xs font-medium bg-[#E65100] text-white px-3 py-1 rounded-full w-fit mb-4">
-                Most popular
-              </div>
-            )}
+      <div className="max-w-md mx-auto w-full">
+        <div className="fade-up delay-1 rounded-2xl p-8 flex flex-col bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]">
+          <h2 className="font-display text-2xl font-black mb-1 text-white">
+            {plan.name}
+          </h2>
+          <p className="text-sm mb-6 text-[#999]">{plan.description}</p>
 
-            <h2
-              className={`font-display text-2xl font-black mb-1 ${plan.highlight ? "text-white" : "text-[#1a1a1a]"}`}
-            >
-              {plan.name}
-            </h2>
-            <p
-              className={`text-sm mb-6 ${plan.highlight ? "text-[#999]" : "text-[#666]"}`}
-            >
-              {plan.description}
-            </p>
-
-            <div className="mb-8">
-              <span
-                className={`text-4xl font-bold ${plan.highlight ? "text-white" : "text-[#1a1a1a]"}`}
-              >
-                ${plan.price}
-              </span>
-              <span
-                className={`text-sm ml-1 ${plan.highlight ? "text-[#999]" : "text-[#666]"}`}
-              >
-                /month
-              </span>
-            </div>
-
-            <ul className="space-y-3 mb-8 flex-1">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex items-center gap-2.5 text-sm">
-                  <Check
-                    className={`h-4 w-4 flex-shrink-0 ${plan.highlight ? "text-[#E65100]" : "text-[#2E7D32]"}`}
-                  />
-                  <span
-                    className={plan.highlight ? "text-[#ccc]" : "text-[#666]"}
-                  >
-                    {feature}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <button
-              onClick={() => handleSelect(plan.name)}
-              disabled={selecting}
-              className={`w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 ${
-                plan.highlight
-                  ? "bg-[#E65100] text-white hover:bg-[#bf4000]"
-                  : "bg-[#1a1a1a] text-white hover:bg-[#333]"
-              }`}
-            >
-              {selecting ? "Setting up..." : plan.cta}
-            </button>
+          <div className="mb-8">
+            <span className="text-4xl font-bold text-white">{plan.price}</span>
+            <span className="text-sm ml-1 text-[#999]">
+              {" "}{plan.currency}/month
+            </span>
           </div>
-        ))}
+
+          <ul className="space-y-3 mb-8 flex-1">
+            {plan.features.map((feature) => (
+              <li key={feature} className="flex items-center gap-2.5 text-sm">
+                <Check className="h-4 w-4 flex-shrink-0 text-[#E65100]" />
+                <span className="text-[#ccc]">{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            onClick={() => handleSelect(plan.name)}
+            disabled={selecting}
+            className="w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer bg-[#E65100] text-white hover:bg-[#bf4000]"
+          >
+            {selecting ? "Setting up..." : plan.cta}
+          </button>
+        </div>
       </div>
       <p className="text-center text-sm text-[#999] mt-8">
-        All plans include{" "}
-        <span className="text-[#E65100] font-medium">unlimited AI calls</span>.
         Start with 15 free minutes, no credit card required.
       </p>
 
       <button
         onClick={handleSkip}
-        className="block mx-auto mt-4 text-sm text-[#999] hover:text-[#666] transition-colors underline underline-offset-2"
+        className="block mx-auto mt-4 text-sm text-[#999] hover:text-[#666] transition-colors underline underline-offset-2 cursor-pointer"
       >
         Skip for now, explore the dashboard
       </button>

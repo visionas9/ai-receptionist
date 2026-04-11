@@ -3,6 +3,7 @@
     "nav": {
       "features": "Features",
       "howItWorks": "How it works",
+      "pricing": "Pricing",
       "signIn": "Sign in",
       "getStarted": "Get started"
     },
@@ -63,6 +64,21 @@
         "title": "Booking confirmed instantly",
         "description": "The appointment is confirmed on the call and appears on your dashboard in seconds."
       }
+    },
+    "pricingSection": {
+      "title": "Simple, transparent pricing",
+      "subtitle": "One plan. Everything included. No surprises.",
+      "planName": "Pro",
+      "price": "799 PLN",
+      "period": "/month",
+      "description": "Everything you need to automate your reception.",
+      "feature1": "1,500 minutes per month",
+      "feature2": "Unlimited AI phone calls",
+      "feature3": "Real-time booking dashboard",
+      "feature4": "Call recordings & transcripts",
+      "feature5": "Priority support",
+      "cta": "Get started",
+      "note": "Start with 15 free minutes. No credit card required."
     },
     "ctaSection": {
       "title": "Ready to automate your business?",
@@ -128,8 +144,8 @@
   },
   "dashboard": {
     "header": {
-      "minutesRemaining": "{n} min free remaining",
-      "minutesEmpty": "Free minutes used up",
+      "minutesRemaining": "{n} min remaining",
+      "minutesEmpty": "Minutes used up",
       "signOut": "Sign out"
     },
     "title": "Appointments",

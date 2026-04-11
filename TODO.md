@@ -29,7 +29,7 @@
 - [x] Display "Unlimited" instead of "99999 min free remaining" post-checkout
 - [x] Assistant prompt overhaul — natural, warm, industry-specific tone
 - [x] Voice upgraded to ElevenLabs Sarah (eleven_turbo_v2_5)
-- [x] LLM upgraded to gpt-4o for better instruction following
+- [x] LLM upgraded to gpt-4o-mini for cost efficiency
 - [x] Full i18n — Polish default, English toggle (🇵🇱/🇬🇧)
 - [x] Auth pages respect language preference
 - [x] Onboarding language preference step (PL/EN)
@@ -39,14 +39,25 @@
 - [x] Ghost booking prevention (silent/abandoned calls no longer saved)
 - [x] Wrong year on appointments fixed (year corrected to current year)
 
-## 🔜 Soon
+## 🧪 Live Test Prep (Do these before 1-week self-test)
 
+- [ ] Switch to single plan — 799 PLN/month, 1500 minutes
+- [ ] Update Stripe to single product at 799 PLN
+- [ ] Update landing page pricing section (remove 3 plans, show single plan)
+- [ ] Set paid tier minutes to 1500 (not 99999) in Stripe webhook
 - [ ] Polish translations reviewed by native speaker
 - [ ] Email notification to owner when appointment is booked
 - [ ] Subscription status shown in dashboard
+- [ ] Test full flow end to end — signup → onboard → pay → call → booking appears
+
+## 🔜 Soon (Post Live Test)
+
 - [ ] Cancel subscription flow
 - [ ] Voice test after onboarding ("hear your AI receptionist")
 - [ ] Handle edge cases: rescheduling, unclear requests, no available slots
+- [ ] Appointment management — cancel, reschedule, mark no-show
+- [ ] Settings page — edit assistant name, greeting, voice
+- [ ] Email notification reminders 24h before appointment
 
 ## 🔐 Security (Pre-launch)
 
@@ -69,11 +80,11 @@
 - [ ] Number pool for free trials (7-day trial, recycled numbers)
 - [ ] Number porting flow — businesses keep existing number
 - [ ] Onboarding step for number porting
+- [ ] Auto-detach number when 1500 min cap hit → manual mode fallback
 
 ## ⚙️ Settings & Management
 
 - [ ] Settings page — edit assistant name, greeting, voice
-- [ ] Appointment management — cancel, reschedule, mark no-show
 
 ## 🌐 Omnichannel (Post-JDG, n8n)
 
@@ -107,9 +118,9 @@
 - All bookings in one dashboard regardless of channel
 - Each business gets their own Twilio number on signup (post-JDG)
 - Number porting — businesses keep their existing number
-- Freemium: 15 free minutes on signup, then paid plans
-- Free tier: browser-based test call, no dedicated number
-- Paid tier: dedicated Twilio number provisioned automatically
+- Single plan: 799 PLN/month, 1500 minutes included
+- When 1500 min hit → number detaches → manual mode until reset
+- Free tier: 15 free minutes, browser-based test call only
 - Face-to-face demos: 1 number manually reassigned per demo (~$4/month)
 - Full Polish + English i18n
 - Register JDG → upgrade Twilio ISV → enable SMS → full launch

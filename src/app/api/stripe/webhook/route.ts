@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
           stripe_customer_id: session.customer as string,
           stripe_subscription_id: session.subscription as string,
           plan: planName,
-          free_minutes_remaining: 99999,
+          free_minutes_remaining: 1500,
         })
         .eq("user_id", userId);
     }

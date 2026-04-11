@@ -18,6 +18,10 @@ export default function LocaleSyncer({ savedLocale }: Props) {
     if (!savedLocale) return;
     if (savedLocale === currentLocale) return;
 
+    const alreadySynced = sessionStorage.getItem("locale_synced");
+    if (alreadySynced) return;
+    sessionStorage.setItem("locale_synced", "true");
+
     document.cookie = `NEXT_LOCALE=${savedLocale};path=/;max-age=31536000;SameSite=Lax`;
     localStorage.setItem("locale", savedLocale);
     window.location.reload();

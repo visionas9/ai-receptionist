@@ -159,7 +159,7 @@ export default function PaywallPage() {
             <button
               onClick={() => handleUpgrade(plan.name)}
               disabled={loading === plan.name}
-              className={`w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 ${
+              className={`w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer ${
                 plan.highlight
                   ? "bg-[#E65100] text-white hover:bg-[#bf4000]"
                   : "bg-[#1a1a1a] text-white hover:bg-[#333]"

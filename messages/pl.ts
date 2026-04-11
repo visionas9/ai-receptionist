@@ -6,6 +6,7 @@ const pl = {
     nav: {
       features: "Funkcje", // TODO: native review
       howItWorks: "Jak to działa", // TODO: native review
+      pricing: "Cennik", // TODO: native review
       signIn: "Zaloguj się", // TODO: native review
       getStarted: "Zacznij teraz", // TODO: native review
     },
@@ -77,6 +78,21 @@ const pl = {
           "Rezerwacja jest potwierdzana podczas rozmowy i pojawia się w panelu w ciągu sekund.", // TODO: native review
       },
     },
+    pricingSection: {
+      title: "Prosta, przejrzysta cena", // TODO: native review
+      subtitle: "Jeden plan. Wszystko w zestawie. Żadnych niespodzianek.", // TODO: native review
+      planName: "Pro", // TODO: native review
+      price: "799 PLN", // TODO: native review
+      period: "/miesiąc", // TODO: native review
+      description: "Wszystko, czego potrzebujesz, by zautomatyzować recepcję.", // TODO: native review
+      feature1: "1500 minut miesięcznie", // TODO: native review
+      feature2: "Nieograniczone rozmowy AI", // TODO: native review
+      feature3: "Panel rezerwacji w czasie rzeczywistym", // TODO: native review
+      feature4: "Nagrania rozmów i transkrypty", // TODO: native review
+      feature5: "Priorytetowe wsparcie", // TODO: native review
+      cta: "Zacznij teraz", // TODO: native review
+      note: "Zacznij z 15 bezpłatnymi minutami. Bez karty kredytowej.", // TODO: native review
+    },
     ctaSection: {
       title: "Gotowy na automatyzację swojej firmy?", // TODO: native review
       subtitle:
@@ -142,8 +158,8 @@ const pl = {
   },
   dashboard: {
     header: {
-      minutesRemaining: "pozostało {n} min bezpłatnie", // TODO: native review
-      minutesEmpty: "Darmowe minuty się skończyły", // TODO: native review
+      minutesRemaining: "pozostało {n} min", // TODO: native review
+      minutesEmpty: "Minuty się skończyły", // TODO: native review
       signOut: "Wyloguj się", // TODO: native review
     },
     title: "Wizyty", // TODO: native review
