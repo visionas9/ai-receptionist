@@ -21,6 +21,12 @@ export default async function DashboardPage({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  // Verify the uid param matches the logged-in user (prevents session confusion after Stripe redirect)
+  const uid = searchParams?.uid;
+  if (uid && uid !== user.id) {
+    redirect("/login");
+  }
+
   const { data: clinic } = await supabase
     .from("clinics")
     .select("*")

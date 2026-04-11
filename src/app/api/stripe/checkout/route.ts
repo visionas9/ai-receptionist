@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         clinicId: clinic.id,
         planName: "Pro",
       },
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?upgraded=true`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?upgraded=true&uid=${userId}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/paywall`,
     });
 
