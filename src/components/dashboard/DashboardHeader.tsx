@@ -17,12 +17,14 @@ interface Props {
   userEmail: string;
   ownerName: string;
   freeMinutes: number;
+  plan?: string | null;
 }
 
 export default function DashboardHeader({
   clinicName,
   ownerName,
   freeMinutes,
+  plan,
 }: Props) {
   const t = useTranslations("dashboard.header");
   const router = useRouter();
@@ -51,6 +53,14 @@ export default function DashboardHeader({
         </div>
 
         <div className="flex items-center gap-4">
+          {/* Subscription plan badge */}
+          {plan && (
+            <span className="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-50 border border-green-200 text-green-700">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              {plan}
+            </span>
+          )}
+
           {/* Free minutes counter */}
           <div
             className={`hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${

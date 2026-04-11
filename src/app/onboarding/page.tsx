@@ -206,13 +206,13 @@ export default function OnboardingPage() {
                 <div className="space-y-3">
                   <button
                     onClick={() => handleLanguageSelect("pl")}
-                    className="w-full text-left px-6 py-4 rounded-2xl border-2 transition-all duration-150 text-sm font-medium border-[#f0ebe0] bg-white text-[#1a1a1a] hover:border-[#E65100]/40 hover:bg-[#FFF8F3]"
+                    className="w-full text-left px-6 py-4 rounded-2xl border-2 transition-all duration-150 text-sm font-medium border-[#f0ebe0] bg-white text-[#1a1a1a] hover:border-[#E65100]/40 hover:bg-[#FFF8F3] cursor-pointer"
                   >
                     {t("language.polish")}
                   </button>
                   <button
                     onClick={() => handleLanguageSelect("en")}
-                    className="w-full text-left px-6 py-4 rounded-2xl border-2 transition-all duration-150 text-sm font-medium border-[#f0ebe0] bg-white text-[#1a1a1a] hover:border-[#E65100]/40 hover:bg-[#FFF8F3]"
+                    className="w-full text-left px-6 py-4 rounded-2xl border-2 transition-all duration-150 text-sm font-medium border-[#f0ebe0] bg-white text-[#1a1a1a] hover:border-[#E65100]/40 hover:bg-[#FFF8F3] cursor-pointer"
                   >
                     {t("language.english")}
                   </button>
@@ -236,7 +236,7 @@ export default function OnboardingPage() {
                       <button
                         key={option.value}
                         onClick={() => handleChoice(option.value)}
-                        className={`w-full text-left px-6 py-4 rounded-2xl border-2 transition-all duration-150 text-sm font-medium
+                        className={`w-full text-left px-6 py-4 rounded-2xl border-2 transition-all duration-150 text-sm font-medium cursor-pointer
                           ${
                             answers[currentQuestion.id] === option.value
                               ? "border-[#E65100] bg-[#FFF3E0] text-[#E65100]"
@@ -263,7 +263,7 @@ export default function OnboardingPage() {
                     <button
                       onClick={handleTextNext}
                       disabled={!textValue.trim()}
-                      className="w-full bg-[#1a1a1a] text-white py-4 rounded-full text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-30"
+                      className="w-full bg-[#1a1a1a] text-white py-4 rounded-full text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-30 cursor-pointer"
                     >
                       {t("continue")}
                     </button>

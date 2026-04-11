@@ -13,7 +13,7 @@
 - [x] Onboarding flow (5 questions, 1 at a time)
 - [x] Save onboarding answers to Supabase
 - [x] Animated loading screen after onboarding
-- [x] Pricing page (3 plans)
+- [x] Pricing page — single plan (799 PLN/month, 1500 min)
 - [x] Broaden landing page messaging (not just clinics)
 - [x] Update landing page copy for broader audience
 - [x] Mobile-responsive appointments table (card layout)
@@ -26,7 +26,9 @@
 - [x] Stripe integration — actual payments when trial ends
 - [x] Paywall page when free minutes hit 0
 - [x] Pricing CTA buttons redirect to Stripe checkout (not dashboard)
-- [x] Display "Unlimited" instead of "99999 min free remaining" post-checkout
+- [x] Single Stripe product at 799 PLN/month
+- [x] Paid tier minutes set to 1500 (not 99999)
+- [x] Minutes deduct correctly after each call
 - [x] Assistant prompt overhaul — natural, warm, industry-specific tone
 - [x] Voice upgraded to ElevenLabs Sarah (eleven_turbo_v2_5)
 - [x] LLM upgraded to gpt-4o-mini for cost efficiency
@@ -38,17 +40,19 @@
 - [x] Stripe checkout renders in correct language
 - [x] Ghost booking prevention (silent/abandoned calls no longer saved)
 - [x] Wrong year on appointments fixed (year corrected to current year)
+- [x] Email notification to owner when appointment is booked (Resend)
+- [x] Correct user session after Stripe redirect
+- [x] Welcome to Pro banner on dashboard after payment
+- [x] Cursor pointer on all interactive buttons
+- [x] End to end test passed — call → booking → email ✅
 
-## 🧪 Live Test Prep (Do these before 1-week self-test)
+## 🧪 Live Test Prep (Remaining)
 
-- [ ] Switch to single plan — 799 PLN/month, 1500 minutes
-- [ ] Update Stripe to single product at 799 PLN
-- [ ] Update landing page pricing section (remove 3 plans, show single plan)
-- [ ] Set paid tier minutes to 1500 (not 99999) in Stripe webhook
 - [ ] Polish translations reviewed by native speaker
-- [ ] Email notification to owner when appointment is booked
 - [ ] Subscription status shown in dashboard
-- [ ] Test full flow end to end — signup → onboard → pay → call → booking appears
+- [ ] Language toggle regression — stays switched after reload
+- [ ] Test Stripe payment → correct dashboard redirect on production
+- [ ] 1-week self-test with real calls
 
 ## 🔜 Soon (Post Live Test)
 
@@ -57,7 +61,7 @@
 - [ ] Handle edge cases: rescheduling, unclear requests, no available slots
 - [ ] Appointment management — cancel, reschedule, mark no-show
 - [ ] Settings page — edit assistant name, greeting, voice
-- [ ] Email notification reminders 24h before appointment
+- [ ] Email reminder 24h before appointment
 
 ## 🔐 Security (Pre-launch)
 
