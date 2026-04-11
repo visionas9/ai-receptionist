@@ -4,11 +4,16 @@ import AppointmentsTable from "@/components/dashboard/AppointmentsTable";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatsBar from "@/components/dashboard/StatsBar";
 import LocaleSyncer from "@/components/LocaleSyncer";
+import UpgradeBanner from "@/components/dashboard/UpgradeBanner";
 import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string>;
+}) {
   const supabase = await createClient();
 
   const {
@@ -24,6 +29,17 @@ export default async function DashboardPage() {
 
   if (!clinic) redirect("/login");
   if (!clinic.onboarded) redirect("/onboarding");
+
+  // Fallback: if payment succeeded but webhook hasn't fired yet, grant minutes now
+  const upgraded = searchParams?.upgraded === "true";
+  if (upgraded && clinic.free_minutes_remaining <= 15) {
+    await supabase
+      .from("clinics")
+      .update({ free_minutes_remaining: 1500 })
+      .eq("user_id", user.id);
+    clinic.free_minutes_remaining = 1500;
+  }
+
   if (clinic.free_minutes_remaining <= 0) redirect("/paywall");
 
   const { data: appointments } = await supabase
@@ -38,6 +54,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-[#FFFCF7]">
       {/* Sync the locale stored in Supabase to the active cookie */}
       <LocaleSyncer savedLocale={clinic.language ?? null} />
+      <UpgradeBanner show={upgraded} />
       <DashboardHeader
         clinicName={clinic.name}
         userEmail={user.email ?? ""}
