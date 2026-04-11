@@ -9,6 +9,7 @@ import {
   Zap,
   Shield,
   BarChart3,
+  Check,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -104,6 +105,16 @@ export default function LandingPage() {
               className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
             >
               {t("nav.howItWorks")}
+            </button>
+            <button
+              onClick={() =>
+                document
+                  .getElementById("pricing")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors"
+            >
+              {t("nav.pricing")}
             </button>
           </nav>
           <div className="flex items-center gap-3">
@@ -262,6 +273,55 @@ export default function LandingPage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="bg-[#f8f4ee] py-20 md:py-32">
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-4xl md:text-5xl font-black mb-4">
+              {t("pricingSection.title")}
+            </h2>
+            <p className="text-[#666] text-lg max-w-xl mx-auto">
+              {t("pricingSection.subtitle")}
+            </p>
+          </div>
+          <div className="max-w-md mx-auto">
+            <div className="bg-[#1a1a1a] text-white rounded-2xl p-8 flex flex-col">
+              <h3 className="font-display text-3xl font-black mb-2 text-white">
+                {t("pricingSection.planName")}
+              </h3>
+              <p className="text-sm text-[#999] mb-6">
+                {t("pricingSection.description")}
+              </p>
+              <div className="mb-8">
+                <span className="text-5xl font-bold text-white">
+                  {t("pricingSection.price")}
+                </span>
+                <span className="text-sm text-[#999] ml-1">
+                  {t("pricingSection.period")}
+                </span>
+              </div>
+              <ul className="space-y-3 mb-8 flex-1">
+                {(["feature1", "feature2", "feature3", "feature4", "feature5"] as const).map((key) => (
+                  <li key={key} className="flex items-center gap-2.5 text-sm">
+                    <Check className="h-4 w-4 text-[#E65100] flex-shrink-0" />
+                    <span className="text-[#ccc]">{t(`pricingSection.${key}`)}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/signup"
+                className="block w-full text-center py-3 rounded-full text-sm font-medium bg-[#E65100] text-white hover:bg-[#bf4000] transition-colors"
+              >
+                {t("pricingSection.cta")}
+              </Link>
+            </div>
+            <p className="text-center text-sm text-[#999] mt-4">
+              {t("pricingSection.note")}
+            </p>
           </div>
         </div>
       </section>
