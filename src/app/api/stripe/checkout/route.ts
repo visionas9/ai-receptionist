@@ -9,26 +9,24 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
-const priceMap: Record<string, string> = {
-  Starter: process.env.STRIPE_PRICE_STARTER!,
-  Growth: process.env.STRIPE_PRICE_GROWTH!,
-  Pro: process.env.STRIPE_PRICE_PRO!,
-};
+// Required env vars: STRIPE_SECRET_KEY, STRIPE_PRICE_PRO, STRIPE_WEBHOOK_SECRET,
+//                    NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, NEXT_PUBLIC_APP_URL
+
+const priceId = process.env.STRIPE_PRICE_PRO!;
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, planName } = await req.json();
+    const { userId } = await req.json();
 
-    if (!userId || !planName) {
+    if (!userId) {
       return NextResponse.json(
-        { error: "userId and planName required" },
+        { error: "userId required" },
         { status: 400 },
       );
     }
 
-    const priceId = priceMap[planName];
     if (!priceId) {
-      return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
+      return NextResponse.json({ error: "STRIPE_PRICE_PRO not configured" }, { status: 500 });
     }
 
     const { data: clinic } = await supabase
@@ -53,7 +51,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         userId,
         clinicId: clinic.id,
-        planName,
+        planName: "Pro",
       },
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?upgraded=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/paywall`,
