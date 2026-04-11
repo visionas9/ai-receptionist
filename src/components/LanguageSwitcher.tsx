@@ -18,7 +18,7 @@ export default function LanguageSwitcher() {
         onClick={() => switchLocale("pl")}
         className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full transition-all ${
           locale === "pl"
-            ? "bg-[#1a1a1a] text-white cursor-default"
+            ? "bg-[#1a1a1a] text-white cursor-pointer"
             : "text-[#666] hover:text-[#1a1a1a] cursor-pointer"
         }`}
       >
@@ -28,8 +28,8 @@ export default function LanguageSwitcher() {
         onClick={() => switchLocale("en")}
         className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full transition-all ${
           locale === "en"
-            ? "bg-[#1a1a1a] text-white"
-            : "text-[#666] hover:text-[#1a1a1a]"
+            ? "bg-[#1a1a1a] text-white cursor-pointer"
+            : "text-[#666] hover:text-[#1a1a1a] cursor-pointer"
         }`}
       >
         🇬🇧 EN
