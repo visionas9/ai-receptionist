@@ -43,14 +43,14 @@
 - [x] Email notification to owner when appointment is booked (Resend)
 - [x] Correct user session after Stripe redirect
 - [x] Welcome to Pro banner on dashboard after payment
-- [x] Cursor pointer on all interactive buttons
+- [x] Cursor pointer on all interactive buttons and onboarding choices
+- [x] Subscription status badge in dashboard (Pro plan indicator)
+- [x] Language toggle respects user preference permanently (localStorage wins)
 - [x] End to end test passed — call → booking → email ✅
 
 ## 🧪 Live Test Prep (Remaining)
 
 - [ ] Polish translations reviewed by native speaker
-- [ ] Subscription status shown in dashboard
-- [ ] Language toggle regression — stays switched after reload
 - [ ] Test Stripe payment → correct dashboard redirect on production
 - [ ] 1-week self-test with real calls
 
@@ -62,6 +62,7 @@
 - [ ] Appointment management — cancel, reschedule, mark no-show
 - [ ] Settings page — edit assistant name, greeting, voice
 - [ ] Email reminder 24h before appointment
+- [ ] Calendar logic (see section below)
 
 ## 🔐 Security (Pre-launch)
 
