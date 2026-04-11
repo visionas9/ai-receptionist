@@ -12,7 +12,7 @@ const supabase = createClient(
 );
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const fromEmail = process.env.RESEND_FROM_EMAIL || "bookings@receply.com";
+const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
 export async function POST(req: NextRequest) {
   try {
