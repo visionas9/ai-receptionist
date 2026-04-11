@@ -33,8 +33,7 @@ export default function DashboardHeader({
     router.push("/login");
   };
 
-  const isUnlimited = freeMinutes >= 99999;
-  const isLow = !isUnlimited && freeMinutes <= 5;
+  const isLow = freeMinutes > 0 && freeMinutes <= 5;
   const isEmpty = freeMinutes <= 0;
 
   return (

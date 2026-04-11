@@ -144,8 +144,8 @@
   },
   "dashboard": {
     "header": {
-      "minutesRemaining": "{n} min free remaining",
-      "minutesEmpty": "Free minutes used up",
+      "minutesRemaining": "{n} min remaining",
+      "minutesEmpty": "Minutes used up",
       "signOut": "Sign out"
     },
     "title": "Appointments",

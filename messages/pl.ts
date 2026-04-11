@@ -158,8 +158,8 @@ const pl = {
   },
   dashboard: {
     header: {
-      minutesRemaining: "pozostało {n} min bezpłatnie", // TODO: native review
-      minutesEmpty: "Darmowe minuty się skończyły", // TODO: native review
+      minutesRemaining: "pozostało {n} min", // TODO: native review
+      minutesEmpty: "Minuty się skończyły", // TODO: native review
       signOut: "Wyloguj się", // TODO: native review
     },
     title: "Wizyty", // TODO: native review
