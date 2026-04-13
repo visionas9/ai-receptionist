@@ -5,6 +5,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { escapeHtml } from "@/lib/escapeHtml";
 
 export async function POST(req: NextRequest) {
   const supabase = createClient(
@@ -135,27 +136,27 @@ export async function POST(req: NextRequest) {
           html: `
 <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; color: #1a1a1a;">
   <h2 style="margin-bottom: 4px;">New booking</h2>
-  <p style="color: #666; margin-top: 0;">${clinic.name || "Your clinic"}</p>
+  <p style="color: #666; margin-top: 0;">${escapeHtml(clinic.name || "Your clinic")}</p>
   <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
     <tr>
       <td style="padding: 8px 0; color: #666; width: 40%;">Patient</td>
-      <td style="padding: 8px 0; font-weight: 600;">${patientName}</td>
+      <td style="padding: 8px 0; font-weight: 600;">${escapeHtml(patientName)}</td>
     </tr>
     <tr>
       <td style="padding: 8px 0; color: #666;">Service</td>
-      <td style="padding: 8px 0;">${serviceType}</td>
+      <td style="padding: 8px 0;">${escapeHtml(serviceType)}</td>
     </tr>
     <tr>
       <td style="padding: 8px 0; color: #666;">Date</td>
-      <td style="padding: 8px 0;">${apptDate}</td>
+      <td style="padding: 8px 0;">${escapeHtml(apptDate)}</td>
     </tr>
     <tr>
       <td style="padding: 8px 0; color: #666;">Time</td>
-      <td style="padding: 8px 0;">${apptTime}</td>
+      <td style="padding: 8px 0;">${escapeHtml(apptTime)}</td>
     </tr>
     <tr>
       <td style="padding: 8px 0; color: #666;">Phone</td>
-      <td style="padding: 8px 0;">${phone}</td>
+      <td style="padding: 8px 0;">${escapeHtml(phone)}</td>
     </tr>
   </table>
   <hr style="border: none; border-top: 1px solid #f0ebe0; margin: 24px 0;" />
