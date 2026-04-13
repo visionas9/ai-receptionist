@@ -132,26 +132,42 @@ export default function OnboardingPage() {
 
   const handleSubmit = async (finalAnswers: Record<string, string>) => {
     setLoading(true);
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return;
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    await supabase
-      .from("clinics")
-      .update({
-        industry: finalAnswers.industry,
-        name: finalAnswers.name || undefined,
-        tone: finalAnswers.tone,
-        busiest_time: finalAnswers.busiest_time,
-        main_goal: finalAnswers.main_goal,
-        language: selectedLanguage,
-        onboarded: true,
-      })
-      .eq("user_id", user.id);
+      if (!user) {
+        setLoading(false);
+        router.push("/login");
+        return;
+      }
 
-    localStorage.removeItem("onboarding_step");
-    router.push("/onboarding/loading");
+      const { error: updateError } = await supabase
+        .from("clinics")
+        .update({
+          industry: finalAnswers.industry,
+          name: finalAnswers.name || undefined,
+          tone: finalAnswers.tone,
+          busiest_time: finalAnswers.busiest_time,
+          main_goal: finalAnswers.main_goal,
+          language: selectedLanguage,
+          onboarded: true,
+        })
+        .eq("user_id", user.id);
+
+      if (updateError) {
+        console.error("Failed to save onboarding data:", updateError);
+        setLoading(false);
+        return;
+      }
+
+      localStorage.removeItem("onboarding_step");
+      router.push("/onboarding/loading");
+    } catch (err) {
+      console.error("Onboarding submit error:", err);
+      setLoading(false);
+    }
   };
 
   if (!loaded || loading) return null;
