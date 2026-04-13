@@ -11,6 +11,7 @@ export default function SignupPage() {
   const [ownerName, setOwnerName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmationSent, setConfirmationSent] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -26,6 +27,14 @@ export default function SignupPage() {
       return;
     }
 
+    // If Supabase requires email confirmation, no session is returned
+    if (!data.session) {
+      setLoading(false);
+      setConfirmationSent(true);
+      return;
+    }
+
+    // Session exists — email confirmation is disabled, proceed with clinic creation
     if (data.user) {
       const { error: clinicError } = await supabase
         .from("clinics")
@@ -44,6 +53,42 @@ export default function SignupPage() {
 
     router.push("/onboarding");
   };
+
+  if (confirmationSent) {
+    return (
+      <div className="min-h-screen bg-[#FFFCF7] flex items-center justify-center px-4">
+        <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap'); .font-display { font-family: 'Fraunces', serif; }`}</style>
+        <div className="w-full max-w-md text-center">
+          <Link
+            href="/"
+            className="font-display text-2xl font-bold text-[#1a1a1a]"
+          >
+            Receply
+          </Link>
+          <div className="bg-white border border-[#f0ebe0] rounded-2xl p-8 shadow-sm mt-8">
+            <div className="w-12 h-12 bg-[#FFF3E0] rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-[#E65100]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <h1 className="font-display text-2xl font-black text-[#1a1a1a] mb-2">
+              Check your email
+            </h1>
+            <p className="text-[#666] text-sm mb-4">
+              We sent a confirmation link to <span className="font-medium text-[#1a1a1a]">{email}</span>.
+              Click the link to activate your account.
+            </p>
+            <Link
+              href="/login"
+              className="text-sm text-[#E65100] hover:underline font-medium"
+            >
+              Back to sign in
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#FFFCF7] flex items-center justify-center px-4">
