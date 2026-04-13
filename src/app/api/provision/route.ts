@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       tone: clinic.tone,
       busiest_time: clinic.busiest_time,
       main_goal: clinic.main_goal,
+      language: clinic.language,
     });
 
     console.log("Created assistant ID:", assistantId);

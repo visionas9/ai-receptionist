@@ -7,6 +7,7 @@ function buildSystemPrompt(clinic: {
   tone: string | null;
   busiest_time: string | null;
   main_goal: string | null;
+  language?: string | null;
 }) {
   const industryServicesMap: Record<string, string> = {
     dental:
@@ -34,7 +35,14 @@ function buildSystemPrompt(clinic: {
     toneInstructionMap[clinic.tone ?? ""] ??
     "You speak in a friendly, natural way — warm but not over the top.";
 
+  const languageInstruction =
+    clinic.language === "pl"
+      ? "You MUST speak Polish (polski) at all times. Every response must be in Polish."
+      : "You speak English at all times.";
+
   return `You are the receptionist at ${clinic.name}. Your name is not important — just focus on being helpful.
+
+${languageInstruction}
 
 ${toneInstruction} You sound like a real person, not a robot. Keep things conversational, natural, and brief. Never read out long lists or repeat yourself.
 
@@ -78,8 +86,16 @@ export async function createVapiAssistant(clinic: {
   main_goal: string | null;
   language?: string | null;
 }) {
-  // TODO: switch assistant prompt to Polish when language === 'pl'
   const systemPrompt = buildSystemPrompt(clinic);
+  const isPolish = clinic.language === "pl";
+
+  const firstMessage = isPolish
+    ? `Cześć, dziękujemy za telefon do ${clinic.name}! W czym mogę pomóc?`
+    : `Hey, thanks for calling ${clinic.name}! How can I help you today?`;
+
+  const endCallMessage = isPolish
+    ? "Dziękuję, do usłyszenia!"
+    : "Take care, speak soon!";
 
   const response = await fetch(`${VAPI_API_URL}/assistant`, {
     method: "POST",
@@ -103,12 +119,12 @@ export async function createVapiAssistant(clinic: {
         provider: "vapi",
         voiceId: "Elliot",
       },
-      firstMessage: `Hey, thanks for calling ${clinic.name}! How can I help you today?`,
-      endCallMessage: "Take care, speak soon!",
+      firstMessage,
+      endCallMessage,
       transcriber: {
         provider: "deepgram",
         model: "nova-2",
-        language: "en",
+        language: isPolish ? "pl" : "en",
       },
       backgroundDenoisingEnabled: true,
       artifactPlan: {
