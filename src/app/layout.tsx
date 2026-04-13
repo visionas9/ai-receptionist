@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["700", "900"],
+  variable: "--font-fraunces",
+});
 
 export const metadata: Metadata = {
   title: "Receply",
@@ -21,7 +26,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={dmSans.className}>
+      <body className={`${dmSans.className} ${fraunces.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>

@@ -40,8 +40,7 @@ export default function DashboardHeader({
 
   return (
     <header className="border-b bg-[#FFFCF7] border-[#f0ebe0] sticky top-0 z-10">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap'); .font-display { font-family: 'Fraunces', serif; }`}</style>
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+<div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="font-display font-bold text-xl text-[#1a1a1a]">
             Receply

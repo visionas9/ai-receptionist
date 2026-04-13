@@ -60,8 +60,6 @@ export default function OnboardingLoadingPage() {
   return (
     <div className="min-h-screen bg-[#FFFCF7] flex flex-col items-center justify-center px-4">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap');
-        .font-display { font-family: 'Fraunces', serif; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .fade-up { animation: fadeUp 0.4s ease forwards; }
       `}</style>

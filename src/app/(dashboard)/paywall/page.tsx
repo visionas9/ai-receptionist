@@ -46,8 +46,6 @@ export default function PaywallPage() {
   return (
     <div className="min-h-screen bg-[#FFFCF7] flex flex-col px-4 py-12">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap');
-        .font-display { font-family: 'Fraunces', serif; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
         .delay-1 { animation-delay: 0.1s; }

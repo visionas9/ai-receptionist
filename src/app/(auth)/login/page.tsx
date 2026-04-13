@@ -30,8 +30,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFCF7] flex items-center justify-center px-4">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap'); .font-display { font-family: 'Fraunces', serif; }`}</style>
-      <div className="w-full max-w-md">
+<div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link
             href="/"

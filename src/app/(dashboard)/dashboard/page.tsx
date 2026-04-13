@@ -57,11 +57,7 @@ export default async function DashboardPage({
   if (paymentPending) {
     return (
       <div className="min-h-screen bg-[#FFFCF7] flex flex-col items-center justify-center px-4">
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap');
-          .font-display { font-family: 'Fraunces', serif; }
-        `}</style>
-        <div className="text-center max-w-md">
+<div className="text-center max-w-md">
           <div className="w-16 h-16 bg-[#FFF3E0] rounded-2xl flex items-center justify-center mx-auto mb-6">
             <svg className="w-8 h-8 text-[#E65100] animate-spin" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

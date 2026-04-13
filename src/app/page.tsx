@@ -65,8 +65,6 @@ export default function LandingPage() {
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:wght@700;900&display=swap');
-        .font-display { font-family: 'Fraunces', serif; }
         .animate-fade-up { animation: fadeUp 0.6s ease forwards; opacity: 0; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .delay-1 { animation-delay: 0.1s; }

@@ -174,7 +174,6 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFCF7] flex flex-col">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap'); .font-display { font-family: 'Fraunces', serif; }`}</style>
 
       {/* Header */}
       <div className="max-w-xl mx-auto w-full px-4 pt-8">
