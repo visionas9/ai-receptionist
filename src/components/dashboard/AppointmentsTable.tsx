@@ -73,8 +73,7 @@ export default function AppointmentsTable({
 
   return (
     <>
-      <>
-        {/* Desktop table */}
+      {/* Desktop table */}
         <div className="hidden md:block bg-white border border-[#f0ebe0] rounded-2xl overflow-hidden">
           <div className="grid grid-cols-7 gap-4 px-6 py-3 border-b border-[#f0ebe0] bg-[#f8f4ee]">
             {tableHeaders.map((h) => (
@@ -215,7 +214,6 @@ export default function AppointmentsTable({
             </div>
           </DialogContent>
         </Dialog>
-      </>
     </>
   );
 }
