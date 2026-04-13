@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -10,18 +10,21 @@ export default function OnboardingLoadingPage() {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
 
-  const stages = [
-    {
-      label: t("stage1Label"),
-      sublabel: t("stage1Sub"),
-      duration: 3000,
-    },
-    {
-      label: t("stage2Label"),
-      sublabel: t("stage2Sub"),
-      duration: 2500,
-    },
-  ];
+  const stages = useMemo(
+    () => [
+      {
+        label: t("stage1Label"),
+        sublabel: t("stage1Sub"),
+        duration: 3000,
+      },
+      {
+        label: t("stage2Label"),
+        sublabel: t("stage2Sub"),
+        duration: 2500,
+      },
+    ],
+    [t],
+  );
 
   useEffect(() => {
     const stage = stages[stageIndex];
@@ -38,7 +41,7 @@ export default function OnboardingLoadingPage() {
         clearInterval(timer);
         if (stageIndex < stages.length - 1) {
           setTimeout(() => {
-            setStageIndex(stageIndex + 1);
+            setStageIndex((prev) => prev + 1);
             setProgress(0);
           }, 400);
         } else {
@@ -50,7 +53,7 @@ export default function OnboardingLoadingPage() {
     }, interval);
 
     return () => clearInterval(timer);
-  }, [stageIndex]);
+  }, [stageIndex, stages, router]);
 
   const stage = stages[stageIndex];
 
