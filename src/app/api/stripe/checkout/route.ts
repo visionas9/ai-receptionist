@@ -19,10 +19,7 @@ export async function POST(req: NextRequest) {
     const { userId } = await req.json();
 
     if (!userId) {
-      return NextResponse.json(
-        { error: "userId required" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "userId required" }, { status: 400 });
     }
 
     if (!priceId) {

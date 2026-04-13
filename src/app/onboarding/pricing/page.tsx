@@ -46,7 +46,7 @@ export default function PricingPage() {
     }
   };
 
-  const handleSelect = async (planName: string) => {
+  const handleSelect = async () => {
     setSelecting(true);
     const supabase = createClient();
     const {
@@ -56,11 +56,10 @@ export default function PricingPage() {
     if (user) {
       await provisionAndOnboard(supabase, user.id);
 
-      // Redirect to Stripe checkout for the selected plan
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id, planName }),
+        body: JSON.stringify({}),
       });
       const data = await res.json();
       if (data.url) {
@@ -138,7 +137,7 @@ export default function PricingPage() {
           </ul>
 
           <button
-            onClick={() => handleSelect(plan.name)}
+            onClick={handleSelect}
             disabled={selecting}
             className="w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer bg-[#E65100] text-white hover:bg-[#bf4000]"
           >
