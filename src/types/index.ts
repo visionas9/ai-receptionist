@@ -4,6 +4,16 @@ export interface Clinic {
   name: string;
   owner_name: string | null;
   language: string | null;
+  industry: string | null;
+  tone: string | null;
+  busiest_time: string | null;
+  main_goal: string | null;
+  onboarded: boolean;
+  vapi_assistant_id: string | null;
+  free_minutes_remaining: number;
+  plan: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
   created_at: string;
 }
 
