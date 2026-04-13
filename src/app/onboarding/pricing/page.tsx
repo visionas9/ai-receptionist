@@ -24,20 +24,24 @@ export default function PricingPage() {
   const router = useRouter();
   const [selecting, setSelecting] = useState(false);
 
-  const provisionAndOnboard = async (
-    supabase: ReturnType<typeof createClient>,
-    userId: string
-  ) => {
+  const provisionAndOnboard = async () => {
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
     await supabase
       .from("clinics")
       .update({ onboarded: true })
-      .eq("user_id", userId);
+      .eq("user_id", user.id);
 
     try {
       const response = await fetch("/api/provision", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({}),
       });
       const data = await response.json();
       console.log("Assistant provisioned:", data.assistantId);
@@ -48,24 +52,17 @@ export default function PricingPage() {
 
   const handleSelect = async () => {
     setSelecting(true);
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    await provisionAndOnboard();
 
-    if (user) {
-      await provisionAndOnboard(supabase, user.id);
-
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-        return;
-      }
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+      return;
     }
 
     router.push("/dashboard");
@@ -73,15 +70,7 @@ export default function PricingPage() {
 
   const handleSkip = async () => {
     setSelecting(true);
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      await provisionAndOnboard(supabase, user.id);
-    }
-
+    await provisionAndOnboard();
     router.push("/dashboard");
   };
 

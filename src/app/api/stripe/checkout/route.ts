@@ -1,40 +1,43 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+import { createClient as createAdminClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
 
 // Required env vars: STRIPE_SECRET_KEY, STRIPE_PRICE_PRO, STRIPE_WEBHOOK_SECRET,
 //                    NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, NEXT_PUBLIC_APP_URL
 
-const priceId = process.env.STRIPE_PRICE_PRO!;
-
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await req.json();
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!userId) {
-      return NextResponse.json({ error: "userId required" }, { status: 400 });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const priceId = process.env.STRIPE_PRICE_PRO;
     if (!priceId) {
       return NextResponse.json({ error: "STRIPE_PRICE_PRO not configured" }, { status: 500 });
     }
 
-    const { data: clinic } = await supabase
+    const adminClient = createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    );
+
+    const { data: clinic } = await adminClient
       .from("clinics")
       .select("*")
-      .eq("user_id", userId)
+      .eq("user_id", user.id)
       .single();
 
     if (!clinic) {
       return NextResponse.json({ error: "Clinic not found" }, { status: 404 });
     }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
@@ -46,11 +49,11 @@ export async function POST(req: NextRequest) {
         },
       ],
       metadata: {
-        userId,
+        userId: user.id,
         clinicId: clinic.id,
         planName: "Pro",
       },
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?upgraded=true&uid=${userId}`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?upgraded=true&uid=${user.id}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/paywall`,
     });
 
