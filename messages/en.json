@@ -136,10 +136,10 @@
       "all": "All of the above"
     },
     "loading": {
-      "stage1Label": "Creating your AI assistant",
-      "stage1Sub": "Training on your business preferences...",
-      "stage2Label": "Setting up your dashboard",
-      "stage2Sub": "Preparing your booking management system..."
+      "stage1Label": "Almost there…",
+      "stage1Sub": "Getting your account ready.",
+      "stage2Label": "One moment",
+      "stage2Sub": "You're being taken to the next step."
     }
   },
   "dashboard": {

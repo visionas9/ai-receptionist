@@ -1,5 +1,10 @@
 "use client";
 
+// This screen is a transitional loading page shown after the user completes
+// the onboarding questionnaire. It performs no provisioning work — it simply
+// plays a short animated sequence before redirecting to /onboarding/pricing.
+// Actual AI assistant provisioning is triggered on the pricing page via /api/provision.
+
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
