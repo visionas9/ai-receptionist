@@ -3,23 +3,10 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Check } from "lucide-react";
-
-const plan = {
-  name: "Pro",
-  price: "799",
-  currency: "PLN",
-  description: "Everything you need to automate your reception.",
-  features: [
-    "1,500 minutes per month",
-    "Unlimited AI phone calls",
-    "Real-time booking dashboard",
-    "Call recordings & transcripts",
-    "Priority support",
-  ],
-  cta: "Upgrade to Pro",
-};
+import { useTranslations } from "next-intl";
 
 export default function PaywallPage() {
+  const t = useTranslations("paywall");
   const [loading, setLoading] = useState(false);
   const supabase = createClient();
 
@@ -57,36 +44,35 @@ export default function PaywallPage() {
         </span>
         <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
           <span className="w-2 h-2 bg-red-500 rounded-full" />
-          Your free minutes have been used up
+          {t("badge")}
         </div>
         <h1 className="font-display text-4xl md:text-5xl font-black text-[#1a1a1a] mb-4">
-          You've had a taste — ready to commit?
+          {t("title")}
         </h1>
         <p className="text-[#666] max-w-md mx-auto">
-          Your AI receptionist has been working hard. Upgrade to keep it running
-          24/7 with unlimited calls.
+          {t("subtitle")}
         </p>
       </div>
 
       <div className="max-w-md mx-auto w-full">
         <div className="fade-up delay-1 rounded-2xl p-8 flex flex-col bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]">
           <h2 className="font-display text-2xl font-black mb-1 text-white">
-            {plan.name}
+            {t("planName")}
           </h2>
-          <p className="text-sm mb-6 text-[#999]">{plan.description}</p>
+          <p className="text-sm mb-6 text-[#999]">{t("planDescription")}</p>
 
           <div className="mb-8">
-            <span className="text-4xl font-bold text-white">{plan.price}</span>
+            <span className="text-4xl font-bold text-white">{t("price")}</span>
             <span className="text-sm ml-1 text-[#999]">
-              {" "}{plan.currency}/month
+              {" "}{t("currency")}{t("period")}
             </span>
           </div>
 
           <ul className="space-y-3 mb-8 flex-1">
-            {plan.features.map((feature) => (
-              <li key={feature} className="flex items-center gap-2.5 text-sm">
+            {(["minutes", "calls", "dashboard", "recordings", "support"] as const).map((key) => (
+              <li key={key} className="flex items-center gap-2.5 text-sm">
                 <Check className="h-4 w-4 flex-shrink-0 text-[#E65100]" />
-                <span className="text-[#ccc]">{feature}</span>
+                <span className="text-[#ccc]">{t(`features.${key}`)}</span>
               </li>
             ))}
           </ul>
@@ -96,13 +82,13 @@ export default function PaywallPage() {
             disabled={loading}
             className="w-full py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer bg-[#E65100] text-white hover:bg-[#bf4000]"
           >
-            {loading ? "Redirecting..." : plan.cta}
+            {loading ? t("redirecting") : t("cta")}
           </button>
         </div>
       </div>
 
       <p className="text-center text-sm text-[#999] mt-8">
-        Cancel anytime. No questions asked.
+        {t("cancelNote")}
       </p>
     </div>
   );
