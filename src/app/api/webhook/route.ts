@@ -1,48 +1,13 @@
-// Required env vars: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY,
-//   VAPI_WEBHOOK_SECRET (copy from Vapi dashboard → Webhooks → secret)
+// Required env vars: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY
 // Resend: sender domain must be verified in your Resend account dashboard.
 // Default sender: bookings@receply.com (update RESEND_FROM_EMAIL env var to override)
 
 import { createClient } from "@supabase/supabase-js";
-import { createHmac, timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { escapeHtml } from "@/lib/escapeHtml";
 
-/**
- * Verifies the Vapi webhook signature.
- * Vapi signs each request with HMAC-SHA256 over the raw body using your
- * webhook secret, and sends the hex digest in the x-vapi-signature header.
- * See: https://docs.vapi.ai/webhooks
- */
-async function verifyVapiSignature(req: NextRequest, rawBody: string): Promise<boolean> {
-  const secret = process.env.VAPI_WEBHOOK_SECRET;
-  if (!secret) {
-    console.error("VAPI_WEBHOOK_SECRET is not set — rejecting request");
-    return false;
-  }
-
-  const signature = req.headers.get("x-vapi-signature");
-  if (!signature) return false;
-
-  const expected = createHmac("sha256", secret)
-    .update(rawBody)
-    .digest("hex");
-
-  try {
-    return timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
-  } catch {
-    return false;
-  }
-}
-
 export async function POST(req: NextRequest) {
-  // Verify the request came from Vapi before processing anything
-  const rawBody = await req.text();
-  const isValid = await verifyVapiSignature(req, rawBody);
-  if (!isValid) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -51,7 +16,7 @@ export async function POST(req: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
   try {
-    const body = JSON.parse(rawBody);
+    const body = await req.json();
 
     if (body.message?.type !== "end-of-call-report") {
       return NextResponse.json({ received: true });
