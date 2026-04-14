@@ -28,9 +28,10 @@ export default async function StatsBar({ appointments }: Props) {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {stats.map((stat) => (
+      {/* key=index is safe: list is fixed-length and never reordered */}
+      {stats.map((stat, index) => (
         <div
-          key={stat.label}
+          key={index}
           className="bg-white border border-[#f0ebe0] rounded-2xl p-5 hover:shadow-sm transition-shadow"
         >
           <div className="flex items-center justify-between mb-3">

@@ -64,3 +64,8 @@ body {
   --receply-section-alt: #f8f4ee;
   --receply-muted: #666666;
 }
+
+/* Fraunces display font — loaded via next/font/google in layout.tsx */
+.font-display {
+  font-family: var(--font-fraunces), serif;
+}

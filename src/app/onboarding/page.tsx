@@ -21,6 +21,7 @@ export default function OnboardingPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [textValue, setTextValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const router = useRouter();
   const supabase = createClient();
 
@@ -158,6 +159,7 @@ export default function OnboardingPage() {
 
       if (updateError) {
         console.error("Failed to save onboarding data:", updateError);
+        setSubmitError(updateError.message || "Failed to save your answers. Please try again.");
         setLoading(false);
         return;
       }
@@ -174,7 +176,11 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFCF7] flex flex-col">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&display=swap'); .font-display { font-family: 'Fraunces', serif; }`}</style>
+      {submitError && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl shadow-sm max-w-sm text-center">
+          {submitError}
+        </div>
+      )}
 
       {/* Header */}
       <div className="max-w-xl mx-auto w-full px-4 pt-8">
