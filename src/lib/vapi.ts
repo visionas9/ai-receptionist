@@ -130,6 +130,12 @@ export async function createVapiAssistant(clinic: {
       artifactPlan: {
         structuredOutputIds: ["a74b684f-a531-41e3-bcda-c1761337643a"],
       },
+      // Vapi sends this secret in the x-vapi-secret header with every webhook
+      // call so the endpoint can verify the request came from Vapi.
+      // Must match VAPI_WEBHOOK_SECRET in your environment.
+      ...(process.env.VAPI_WEBHOOK_SECRET
+        ? { server: { secret: process.env.VAPI_WEBHOOK_SECRET } }
+        : {}),
     }),
   });
 
