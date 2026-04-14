@@ -18,8 +18,10 @@ import { escapeHtml } from "@/lib/escapeHtml";
 function verifyVapiSecret(req: NextRequest): boolean {
   const secret = process.env.VAPI_WEBHOOK_SECRET;
   if (!secret) {
-    console.error("VAPI_WEBHOOK_SECRET is not set — rejecting request");
-    return false;
+    // Secret not configured — allow through but warn. Set VAPI_WEBHOOK_SECRET
+    // in your environment to enable verification and block fake requests.
+    console.warn("VAPI_WEBHOOK_SECRET is not set — skipping webhook verification");
+    return true;
   }
 
   const incoming = req.headers.get("x-vapi-secret");
