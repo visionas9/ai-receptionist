@@ -150,11 +150,86 @@ const pl = {
       all: "Wszystko powyższe", // TODO: native review
     },
     loading: {
-      stage1Label: "Tworzę Twojego asystenta AI", // TODO: native review
-      stage1Sub: "Uczę go specyfiki Twojego biznesu...", // TODO: native review
-      stage2Label: "Przygotowuję panel", // TODO: native review
-      stage2Sub: "Konfiguruję system zarządzania rezerwacjami...", // TODO: native review
+      stage1Label: "Prawie gotowe…", // TODO: native review
+      stage1Sub: "Przygotowujemy Twoje konto.", // TODO: native review
+      stage2Label: "Chwilę…", // TODO: native review
+      stage2Sub: "Zaraz przejdziesz do następnego kroku.", // TODO: native review
     },
+  },
+  auth: {
+    login: {
+      title: "Witaj ponownie", // TODO: native review
+      subtitle: "Zaloguj się do panelu swojej firmy", // TODO: native review
+      emailLabel: "E-mail", // TODO: native review
+      emailPlaceholder: "ty@firma.pl", // TODO: native review
+      passwordLabel: "Hasło", // TODO: native review
+      passwordPlaceholder: "••••••••", // TODO: native review
+      signingIn: "Logowanie...", // TODO: native review
+      signIn: "Zaloguj się", // TODO: native review
+      noAccount: "Nie masz konta?", // TODO: native review
+      signUp: "Zarejestruj się", // TODO: native review
+    },
+    signup: {
+      title: "Utwórz konto", // TODO: native review
+      subtitle: "Zacznij zarządzać swoją firmą z pomocą AI", // TODO: native review
+      nameLabel: "Twoje imię i nazwisko", // TODO: native review
+      namePlaceholder: "lek. Jan Kowalski", // TODO: native review
+      emailLabel: "E-mail", // TODO: native review
+      emailPlaceholder: "ty@firma.pl", // TODO: native review
+      passwordLabel: "Hasło", // TODO: native review
+      passwordPlaceholder: "••••••••", // TODO: native review
+      creatingAccount: "Tworzę konto...", // TODO: native review
+      createAccount: "Utwórz konto", // TODO: native review
+      alreadyHaveAccount: "Masz już konto?", // TODO: native review
+      signIn: "Zaloguj się", // TODO: native review
+      confirmEmail: {
+        title: "Sprawdź pocztę", // TODO: native review
+        message: "Wysłaliśmy link aktywacyjny na adres", // TODO: native review
+        instruction: "Kliknij link, aby aktywować konto.", // TODO: native review
+        backToSignIn: "Wróć do logowania", // TODO: native review
+      },
+    },
+  },
+  paywall: {
+    badge: "Twoje bezpłatne minuty zostały wykorzystane", // TODO: native review
+    title: "Miałeś przedsmak — czas na pełną wersję?", // TODO: native review
+    subtitle: "Twój asystent AI ciężko pracował. Przejdź na wyższy plan, aby działał 24/7 bez ograniczeń.", // TODO: native review
+    planName: "Pro", // TODO: native review
+    planDescription: "Wszystko, czego potrzebujesz, by zautomatyzować recepcję.", // TODO: native review
+    price: "799", // TODO: native review
+    currency: "PLN", // TODO: native review
+    period: "/miesiąc", // TODO: native review
+    features: {
+      minutes: "1 500 minut miesięcznie", // TODO: native review
+      calls: "Nieograniczone rozmowy AI", // TODO: native review
+      dashboard: "Panel rezerwacji w czasie rzeczywistym", // TODO: native review
+      recordings: "Nagrania rozmów i transkrypty", // TODO: native review
+      support: "Priorytetowe wsparcie", // TODO: native review
+    },
+    cta: "Przejdź na Pro", // TODO: native review
+    redirecting: "Przekierowuję...", // TODO: native review
+    cancelNote: "Anuluj w dowolnym momencie. Bez pytań.", // TODO: native review
+  },
+  pricing: {
+    badge: "Twój asystent AI jest gotowy", // TODO: native review
+    title: "Wybierz plan", // TODO: native review
+    subtitle: "Zacznij z 15 bezpłatnymi minutami. Bez karty kredytowej. Anuluj kiedy chcesz.", // TODO: native review
+    planName: "Pro", // TODO: native review
+    planDescription: "Wszystko, czego potrzebujesz, by zautomatyzować recepcję.", // TODO: native review
+    price: "799", // TODO: native review
+    currency: "PLN", // TODO: native review
+    period: "/miesiąc", // TODO: native review
+    features: {
+      minutes: "1 500 minut miesięcznie", // TODO: native review
+      calls: "Nieograniczone rozmowy AI", // TODO: native review
+      dashboard: "Panel rezerwacji w czasie rzeczywistym", // TODO: native review
+      recordings: "Nagrania rozmów i transkrypty", // TODO: native review
+      support: "Priorytetowe wsparcie", // TODO: native review
+    },
+    cta: "Zacznij teraz", // TODO: native review
+    settingUp: "Konfiguracja...", // TODO: native review
+    freeNote: "Zacznij z 15 bezpłatnymi minutami, bez karty kredytowej.", // TODO: native review
+    skip: "Pomiń na razie, przejdź do panelu", // TODO: native review
   },
   dashboard: {
     header: {
