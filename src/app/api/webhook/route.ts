@@ -4,33 +4,29 @@
 // Default sender: bookings@receply.com (update RESEND_FROM_EMAIL env var to override)
 
 import { createClient } from "@supabase/supabase-js";
-import { createHmac, timingSafeEqual } from "crypto";
+import { timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { escapeHtml } from "@/lib/escapeHtml";
 
 /**
- * Verifies the Vapi webhook signature.
- * Vapi signs each request with HMAC-SHA256 over the raw body using your
- * webhook secret, and sends the hex digest in the x-vapi-signature header.
- * See: https://docs.vapi.ai/webhooks
+ * Verifies the Vapi webhook request.
+ * Vapi sends the secret you configured in the Vapi dashboard (Server Configuration)
+ * as a plain value in the x-vapi-secret header on every webhook call.
+ * Set VAPI_WEBHOOK_SECRET in your env to the same value you entered in Vapi.
  */
-async function verifyVapiSignature(req: NextRequest, rawBody: string): Promise<boolean> {
+function verifyVapiSecret(req: NextRequest): boolean {
   const secret = process.env.VAPI_WEBHOOK_SECRET;
   if (!secret) {
     console.error("VAPI_WEBHOOK_SECRET is not set — rejecting request");
     return false;
   }
 
-  const signature = req.headers.get("x-vapi-signature");
-  if (!signature) return false;
-
-  const expected = createHmac("sha256", secret)
-    .update(rawBody)
-    .digest("hex");
+  const incoming = req.headers.get("x-vapi-secret");
+  if (!incoming) return false;
 
   try {
-    return timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+    return timingSafeEqual(Buffer.from(incoming), Buffer.from(secret));
   } catch {
     return false;
   }
@@ -38,11 +34,11 @@ async function verifyVapiSignature(req: NextRequest, rawBody: string): Promise<b
 
 export async function POST(req: NextRequest) {
   // Verify the request came from Vapi before processing anything
-  const rawBody = await req.text();
-  const isValid = await verifyVapiSignature(req, rawBody);
-  if (!isValid) {
+  if (!verifyVapiSecret(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const rawBody = await req.text();
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
