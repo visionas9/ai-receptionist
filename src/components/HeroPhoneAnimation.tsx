@@ -1,25 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import styles from "./HeroPhoneAnimation.module.css";
 
 type Screen = "incoming" | "in-call" | "confirmed";
 type Speaker = "ai" | "caller";
 type AiStatus = "listening" | "speaking";
 
-type Bubble = {
-  id: number;
-  who: Speaker;
-  text: string;
-};
+type ScriptLine = { who: Speaker; text: string };
 
-const SCRIPT: { who: Speaker; text: string }[] = [
-  { who: "ai", text: "Hello, Bright Smile Dental. How can I help?" },
-  { who: "caller", text: "Hi, I'd like to book a checkup for Friday at 3pm." },
-  { who: "ai", text: "Let me check… Friday at 3pm is available. What's the name?" },
-  { who: "caller", text: "Anna Kowalski." },
-  { who: "ai", text: "Booked. See you Friday at 3pm." },
-];
+type Bubble = ScriptLine & { id: number };
 
 function formatTimer(totalSeconds: number) {
   const m = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
@@ -28,6 +19,19 @@ function formatTimer(totalSeconds: number) {
 }
 
 export default function HeroPhoneAnimation() {
+  const t = useTranslations("landing.hero.animation");
+
+  const script = useMemo<ScriptLine[]>(
+    () => [
+      { who: "ai", text: t("line1") },
+      { who: "caller", text: t("line2") },
+      { who: "ai", text: t("line3") },
+      { who: "caller", text: t("line4") },
+      { who: "ai", text: t("line5") },
+    ],
+    [t],
+  );
+
   const [screen, setScreen] = useState<Screen>("incoming");
   const [transcript, setTranscript] = useState<Bubble[]>([]);
   const [aiStatus, setAiStatus] = useState<AiStatus>("listening");
@@ -43,11 +47,11 @@ export default function HeroPhoneAnimation() {
 
     const wait = (ms: number) =>
       new Promise<void>((resolve) => {
-        const t = setTimeout(() => {
-          timeouts.delete(t);
+        const timeoutId = setTimeout(() => {
+          timeouts.delete(timeoutId);
           resolve();
         }, ms);
-        timeouts.add(t);
+        timeouts.add(timeoutId);
       });
 
     const stopTimer = () => {
@@ -67,7 +71,7 @@ export default function HeroPhoneAnimation() {
       }, 1000);
     };
 
-    const addBubble = (line: { who: Speaker; text: string }) => {
+    const addBubble = (line: ScriptLine) => {
       bubbleIdRef.current += 1;
       const next: Bubble = {
         id: bubbleIdRef.current,
@@ -101,7 +105,7 @@ export default function HeroPhoneAnimation() {
         await wait(800);
         if (cancelled) return;
 
-        for (const line of SCRIPT) {
+        for (const line of script) {
           addBubble(line);
           await wait(1700);
           if (cancelled) return;
@@ -131,14 +135,14 @@ export default function HeroPhoneAnimation() {
       timeouts.clear();
       stopTimer();
     };
-  }, []);
+  }, [script]);
 
   const visibleBubbles = transcript;
 
   return (
     <div
       className={`${styles.root} flex flex-col items-center gap-10 md:flex-row md:items-center md:justify-center md:gap-12`}
-      aria-label="Demo of Receply handling an incoming call"
+      aria-label={t("ariaLabel")}
     >
       {/* PHONE */}
       <div className="relative scale-90 md:scale-100">
@@ -164,16 +168,18 @@ export default function HeroPhoneAnimation() {
             >
               <div className="mt-5 flex flex-col items-center">
                 <div className="mb-[30px] text-[13px] uppercase tracking-[0.1em] text-ink-soft">
-                  Incoming call · Receply
+                  {t("incomingCall")}
                 </div>
-                <div className={`${styles.avatar} mb-6`}>A</div>
+                <div className={`${styles.avatar} mb-6`}>
+                  {t("callerName").charAt(0)}
+                </div>
                 <div
                   className="mb-1.5 text-[26px] font-medium text-ink"
                   style={{ fontFamily: "var(--font-fraunces), serif" }}
                 >
-                  Anna Kowalski
+                  {t("callerName")}
                 </div>
-                <div className="text-[15px] text-ink-soft">+48 501 234 567</div>
+                <div className="text-[15px] text-ink-soft">{t("callerNumber")}</div>
               </div>
               <div className="flex gap-[70px]">
                 <div className={`${styles.callBtn} ${styles.callBtnDecline}`}>
@@ -207,20 +213,20 @@ export default function HeroPhoneAnimation() {
               data-active={screen === "in-call"}
             >
               <div className="mb-2.5 text-xs uppercase tracking-[0.15em] text-cream/60">
-                AI Receptionist
+                {t("aiReceptionist")}
               </div>
               <div
                 className="mb-1.5 text-[22px] font-medium"
                 style={{ fontFamily: "var(--font-fraunces), serif" }}
               >
-                Bright Smile Dental
+                {t("businessName")}
               </div>
               <div className="mb-[30px] text-sm tabular-nums text-cream/70">
                 {formatTimer(callSeconds)}
               </div>
               <div className={`${styles.aiOrb} mb-[30px]`} />
               <div className="mb-4 text-[13px] uppercase tracking-[0.1em] text-cream/50">
-                {aiStatus === "speaking" ? "Speaking…" : "Listening…"}
+                {aiStatus === "speaking" ? t("speaking") : t("listening")}
               </div>
               <div className="flex w-full flex-col gap-2.5 px-1">
                 {visibleBubbles.map((b, i) => {
@@ -233,7 +239,7 @@ export default function HeroPhoneAnimation() {
                       className={`${styles.bubble} ${b.who === "ai" ? styles.bubbleAi : styles.bubbleCustomer}`}
                     >
                       <div className="mb-[3px] text-[10px] font-medium uppercase tracking-[0.1em] opacity-55">
-                        {b.who === "ai" ? "AI" : "Caller"}
+                        {b.who === "ai" ? t("labelAI") : t("labelCaller")}
                       </div>
                       {b.text}
                     </div>
@@ -256,23 +262,23 @@ export default function HeroPhoneAnimation() {
                 className="mb-2 text-[28px] font-medium text-ink"
                 style={{ fontFamily: "var(--font-fraunces), serif" }}
               >
-                Booked
+                {t("booked")}
               </div>
               <div className="max-w-[220px] text-[15px] leading-[1.5] text-ink-soft">
-                Anna&apos;s appointment has been added to your dashboard.
+                {t("bookedSubtitle")}
               </div>
               <div className="mt-[30px] w-full rounded-[18px] border border-sage/10 bg-white p-4 px-[18px] text-left shadow-[0_10px_30px_-10px_rgba(42,38,35,0.12)]">
                 <div className="mb-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-sage">
-                  New booking
+                  {t("newBookingTag")}
                 </div>
                 <div
                   className="mb-1 text-[18px] font-medium"
                   style={{ fontFamily: "var(--font-fraunces), serif" }}
                 >
-                  Anna Kowalski
+                  {t("callerName")}
                 </div>
                 <div className="text-[13px] text-ink-soft">
-                  Friday, Mar 14 · 15:00 · Checkup
+                  {t("bookingDetail")}
                 </div>
               </div>
             </div>
@@ -288,16 +294,16 @@ export default function HeroPhoneAnimation() {
               className="text-[17px] font-medium"
               style={{ fontFamily: "var(--font-fraunces), serif" }}
             >
-              Bright Smile Dental
+              {t("businessName")}
             </div>
             <div
               className={`${styles.liveDot} flex items-center text-[11px] font-medium uppercase tracking-[0.1em] text-sage`}
             >
-              Live
+              {t("live")}
             </div>
           </div>
           <div className="mb-2.5 inline-block rounded bg-sage px-2 py-[3px] text-[10px] font-medium uppercase tracking-[0.1em] text-cream">
-            Just now
+            {t("justNow")}
           </div>
           <div
             // Re-key on each show toggle so the highlight CSS animation
@@ -306,11 +312,11 @@ export default function HeroPhoneAnimation() {
             className={`${styles.bookingRow} ${styles.bookingRowHighlighted}`}
           >
             <div>
-              <div className="mb-0.5 text-[15px] font-medium">Anna Kowalski</div>
-              <div className="text-xs text-ink-soft">Fri · Mar 14 · 15:00 · Checkup</div>
+              <div className="mb-0.5 text-[15px] font-medium">{t("callerName")}</div>
+              <div className="text-xs text-ink-soft">{t("bookingDetail")}</div>
             </div>
             <div className="rounded-full bg-success-sage/10 px-2.5 py-1 text-[11px] font-medium tracking-wider text-success-sage">
-              Confirmed
+              {t("confirmed")}
             </div>
           </div>
           <div className={styles.bookingRow}>
@@ -319,7 +325,7 @@ export default function HeroPhoneAnimation() {
               <div className="text-xs text-ink-soft">Fri · Mar 14 · 11:30 · Cleaning</div>
             </div>
             <div className="rounded-full bg-success-sage/10 px-2.5 py-1 text-[11px] font-medium tracking-wider text-success-sage">
-              Confirmed
+              {t("confirmed")}
             </div>
           </div>
           <div className={styles.bookingRow}>
@@ -328,7 +334,7 @@ export default function HeroPhoneAnimation() {
               <div className="text-xs text-ink-soft">Sat · Mar 15 · 09:00 · Toothache</div>
             </div>
             <div className="rounded-full bg-success-sage/10 px-2.5 py-1 text-[11px] font-medium tracking-wider text-success-sage">
-              Confirmed
+              {t("confirmed")}
             </div>
           </div>
         </div>
