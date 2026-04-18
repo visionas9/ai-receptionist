@@ -1,26 +1,139 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import styles from "./HeroPhoneAnimation.module.css";
 
 type Screen = "incoming" | "in-call" | "confirmed";
+type Speaker = "ai" | "caller";
+type AiStatus = "listening" | "speaking";
 
 type Bubble = {
   id: number;
-  who: "ai" | "caller";
+  who: Speaker;
   text: string;
-  state: "visible" | "faded";
 };
 
-const STATIC_TRANSCRIPT: Bubble[] = [];
-const STATIC_SCREEN: Screen = "incoming";
-const STATIC_SHOW_DASHBOARD = false;
+const SCRIPT: { who: Speaker; text: string }[] = [
+  { who: "ai", text: "Hello, Bright Smile Dental. How can I help?" },
+  { who: "caller", text: "Hi, I'd like to book a checkup for Friday at 3pm." },
+  { who: "ai", text: "Let me check… Friday at 3pm is available. What's the name?" },
+  { who: "caller", text: "Anna Kowalski." },
+  { who: "ai", text: "Booked. See you Friday at 3pm." },
+];
+
+function formatTimer(totalSeconds: number) {
+  const m = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+  const s = String(totalSeconds % 60).padStart(2, "0");
+  return `${m}:${s}`;
+}
 
 export default function HeroPhoneAnimation() {
-  const screen = STATIC_SCREEN;
-  const transcript = STATIC_TRANSCRIPT;
-  const showDashboard = STATIC_SHOW_DASHBOARD;
-  const aiStatus = "Listening…";
-  const timer = "00:00";
+  const [screen, setScreen] = useState<Screen>("incoming");
+  const [transcript, setTranscript] = useState<Bubble[]>([]);
+  const [aiStatus, setAiStatus] = useState<AiStatus>("listening");
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [callSeconds, setCallSeconds] = useState(0);
+
+  const bubbleIdRef = useRef(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    const timeouts = new Set<ReturnType<typeof setTimeout>>();
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const t = setTimeout(() => {
+          timeouts.delete(t);
+          resolve();
+        }, ms);
+        timeouts.add(t);
+      });
+
+    const stopTimer = () => {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    const startTimer = () => {
+      stopTimer();
+      setCallSeconds(0);
+      let s = 0;
+      intervalId = setInterval(() => {
+        s += 1;
+        setCallSeconds(s);
+      }, 1000);
+    };
+
+    const addBubble = (line: { who: Speaker; text: string }) => {
+      bubbleIdRef.current += 1;
+      const next: Bubble = {
+        id: bubbleIdRef.current,
+        who: line.who,
+        text: line.text,
+      };
+      // Keep at most 3 bubbles in state — matches the source's
+      // DOM-trim behavior so older nodes stop rendering.
+      setTranscript((prev) => [...prev, next].slice(-3));
+      setAiStatus(line.who === "ai" ? "speaking" : "listening");
+    };
+
+    async function runSequence(): Promise<void> {
+      while (!cancelled) {
+        // Reset
+        setTranscript([]);
+        bubbleIdRef.current = 0;
+        setShowDashboard(false);
+        setAiStatus("listening");
+        setCallSeconds(0);
+        stopTimer();
+
+        // 1. Incoming
+        setScreen("incoming");
+        await wait(2200);
+        if (cancelled) return;
+
+        // 2. In-call
+        setScreen("in-call");
+        startTimer();
+        await wait(800);
+        if (cancelled) return;
+
+        for (const line of SCRIPT) {
+          addBubble(line);
+          await wait(1700);
+          if (cancelled) return;
+        }
+
+        stopTimer();
+        await wait(400);
+        if (cancelled) return;
+
+        // 3. Confirmed
+        setScreen("confirmed");
+        await wait(800);
+        if (cancelled) return;
+
+        // 4. Dashboard slide-in
+        setShowDashboard(true);
+        await wait(5000);
+        if (cancelled) return;
+      }
+    }
+
+    runSequence();
+
+    return () => {
+      cancelled = true;
+      timeouts.forEach(clearTimeout);
+      timeouts.clear();
+      stopTimer();
+    };
+  }, []);
+
+  const visibleBubbles = transcript;
 
   return (
     <div
@@ -54,7 +167,10 @@ export default function HeroPhoneAnimation() {
                   Incoming call · Receply
                 </div>
                 <div className={`${styles.avatar} mb-6`}>A</div>
-                <div className="mb-1.5 font-[var(--font-fraunces)] text-[26px] font-medium text-ink">
+                <div
+                  className="mb-1.5 text-[26px] font-medium text-ink"
+                  style={{ fontFamily: "var(--font-fraunces), serif" }}
+                >
                   Anna Kowalski
                 </div>
                 <div className="text-[15px] text-ink-soft">+48 501 234 567</div>
@@ -93,29 +209,36 @@ export default function HeroPhoneAnimation() {
               <div className="mb-2.5 text-xs uppercase tracking-[0.15em] text-cream/60">
                 AI Receptionist
               </div>
-              <div className="mb-1.5 text-[22px] font-medium" style={{ fontFamily: "var(--font-fraunces), serif" }}>
+              <div
+                className="mb-1.5 text-[22px] font-medium"
+                style={{ fontFamily: "var(--font-fraunces), serif" }}
+              >
                 Bright Smile Dental
               </div>
               <div className="mb-[30px] text-sm tabular-nums text-cream/70">
-                {timer}
+                {formatTimer(callSeconds)}
               </div>
               <div className={`${styles.aiOrb} mb-[30px]`} />
               <div className="mb-4 text-[13px] uppercase tracking-[0.1em] text-cream/50">
-                {aiStatus}
+                {aiStatus === "speaking" ? "Speaking…" : "Listening…"}
               </div>
               <div className="flex w-full flex-col gap-2.5 px-1">
-                {transcript.map((b) => (
-                  <div
-                    key={b.id}
-                    data-state={b.state}
-                    className={`${styles.bubble} ${b.who === "ai" ? styles.bubbleAi : styles.bubbleCustomer}`}
-                  >
-                    <div className="mb-[3px] text-[10px] font-medium uppercase tracking-[0.1em] opacity-55">
-                      {b.who === "ai" ? "AI" : "Caller"}
+                {visibleBubbles.map((b, i) => {
+                  const isOldestOfThree =
+                    visibleBubbles.length === 3 && i === 0;
+                  return (
+                    <div
+                      key={b.id}
+                      data-state={isOldestOfThree ? "faded" : "visible"}
+                      className={`${styles.bubble} ${b.who === "ai" ? styles.bubbleAi : styles.bubbleCustomer}`}
+                    >
+                      <div className="mb-[3px] text-[10px] font-medium uppercase tracking-[0.1em] opacity-55">
+                        {b.who === "ai" ? "AI" : "Caller"}
+                      </div>
+                      {b.text}
                     </div>
-                    {b.text}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -167,14 +290,21 @@ export default function HeroPhoneAnimation() {
             >
               Bright Smile Dental
             </div>
-            <div className={`${styles.liveDot} flex items-center text-[11px] font-medium uppercase tracking-[0.1em] text-sage`}>
+            <div
+              className={`${styles.liveDot} flex items-center text-[11px] font-medium uppercase tracking-[0.1em] text-sage`}
+            >
               Live
             </div>
           </div>
           <div className="mb-2.5 inline-block rounded bg-sage px-2 py-[3px] text-[10px] font-medium uppercase tracking-[0.1em] text-cream">
             Just now
           </div>
-          <div className={`${styles.bookingRow} ${styles.bookingRowHighlighted}`}>
+          <div
+            // Re-key on each show toggle so the highlight CSS animation
+            // re-runs every loop iteration.
+            key={showDashboard ? "highlighted" : "idle"}
+            className={`${styles.bookingRow} ${styles.bookingRowHighlighted}`}
+          >
             <div>
               <div className="mb-0.5 text-[15px] font-medium">Anna Kowalski</div>
               <div className="text-xs text-ink-soft">Fri · Mar 14 · 15:00 · Checkup</div>
