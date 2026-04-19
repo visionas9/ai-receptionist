@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import styles from "./HeroPhoneAnimation.module.css";
 
@@ -37,105 +37,151 @@ export default function HeroPhoneAnimation() {
   const [aiStatus, setAiStatus] = useState<AiStatus>("listening");
   const [showDashboard, setShowDashboard] = useState(false);
   const [callSeconds, setCallSeconds] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isPlayingOneShot, setIsPlayingOneShot] = useState(false);
 
   const bubbleIdRef = useRef(0);
+  // Each call to runSequence increments this; in-flight steps abort
+  // when their captured generation no longer matches the current one.
+  const generationRef = useRef(0);
 
+  // Detect reduced-motion on mount and react to changes.
   useEffect(() => {
-    let cancelled = false;
-    const timeouts = new Set<ReturnType<typeof setTimeout>>();
-    let intervalId: ReturnType<typeof setInterval> | null = null;
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setPrefersReducedMotion(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
-    const wait = (ms: number) =>
-      new Promise<void>((resolve) => {
-        const timeoutId = setTimeout(() => {
-          timeouts.delete(timeoutId);
-          resolve();
-        }, ms);
-        timeouts.add(timeoutId);
-      });
+  const runSequence = useCallback(
+    async (loop: boolean) => {
+      const myGen = ++generationRef.current;
+      const isCurrent = () => generationRef.current === myGen;
 
-    const stopTimer = () => {
-      if (intervalId !== null) {
-        clearInterval(intervalId);
-        intervalId = null;
-      }
-    };
+      const timeouts = new Set<ReturnType<typeof setTimeout>>();
+      let intervalId: ReturnType<typeof setInterval> | null = null;
 
-    const startTimer = () => {
-      stopTimer();
-      setCallSeconds(0);
-      let s = 0;
-      intervalId = setInterval(() => {
-        s += 1;
-        setCallSeconds(s);
-      }, 1000);
-    };
+      const wait = (ms: number) =>
+        new Promise<void>((resolve) => {
+          const id = setTimeout(() => {
+            timeouts.delete(id);
+            resolve();
+          }, ms);
+          timeouts.add(id);
+        });
 
-    const addBubble = (line: ScriptLine) => {
-      bubbleIdRef.current += 1;
-      const next: Bubble = {
-        id: bubbleIdRef.current,
-        who: line.who,
-        text: line.text,
-      };
-      // Keep at most 3 bubbles in state — matches the source's
-      // DOM-trim behavior so older nodes stop rendering.
-      setTranscript((prev) => [...prev, next].slice(-3));
-      setAiStatus(line.who === "ai" ? "speaking" : "listening");
-    };
-
-    async function runSequence(): Promise<void> {
-      while (!cancelled) {
-        // Reset
-        setTranscript([]);
-        bubbleIdRef.current = 0;
-        setShowDashboard(false);
-        setAiStatus("listening");
-        setCallSeconds(0);
-        stopTimer();
-
-        // 1. Incoming
-        setScreen("incoming");
-        await wait(2200);
-        if (cancelled) return;
-
-        // 2. In-call
-        setScreen("in-call");
-        startTimer();
-        await wait(800);
-        if (cancelled) return;
-
-        for (const line of script) {
-          addBubble(line);
-          await wait(1700);
-          if (cancelled) return;
+      const stopTimer = () => {
+        if (intervalId !== null) {
+          clearInterval(intervalId);
+          intervalId = null;
         }
+      };
 
+      const startTimer = () => {
         stopTimer();
-        await wait(400);
-        if (cancelled) return;
+        setCallSeconds(0);
+        let s = 0;
+        intervalId = setInterval(() => {
+          s += 1;
+          setCallSeconds(s);
+        }, 1000);
+      };
 
-        // 3. Confirmed
-        setScreen("confirmed");
-        await wait(800);
-        if (cancelled) return;
+      const addBubble = (line: ScriptLine) => {
+        bubbleIdRef.current += 1;
+        const next: Bubble = {
+          id: bubbleIdRef.current,
+          who: line.who,
+          text: line.text,
+        };
+        // Keep at most 3 bubbles — matches the source's DOM-trim
+        // behavior so older nodes stop rendering.
+        setTranscript((prev) => [...prev, next].slice(-3));
+        setAiStatus(line.who === "ai" ? "speaking" : "listening");
+      };
 
-        // 4. Dashboard slide-in
-        setShowDashboard(true);
-        await wait(5000);
-        if (cancelled) return;
+      const cleanup = () => {
+        timeouts.forEach(clearTimeout);
+        timeouts.clear();
+        stopTimer();
+      };
+
+      try {
+        do {
+          setTranscript([]);
+          bubbleIdRef.current = 0;
+          setShowDashboard(false);
+          setAiStatus("listening");
+          setCallSeconds(0);
+          stopTimer();
+
+          setScreen("incoming");
+          await wait(2200);
+          if (!isCurrent()) return;
+
+          setScreen("in-call");
+          startTimer();
+          await wait(800);
+          if (!isCurrent()) return;
+
+          for (const line of script) {
+            addBubble(line);
+            await wait(1700);
+            if (!isCurrent()) return;
+          }
+
+          stopTimer();
+          await wait(400);
+          if (!isCurrent()) return;
+
+          setScreen("confirmed");
+          await wait(800);
+          if (!isCurrent()) return;
+
+          setShowDashboard(true);
+          await wait(5000);
+          if (!isCurrent()) return;
+        } while (loop);
+      } finally {
+        cleanup();
       }
+    },
+    [script],
+  );
+
+  // Auto-loop on mount unless the user prefers reduced motion. In that
+  // case we render the final pose (booked + dashboard visible) and let
+  // them opt into the playback via the Play button.
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      generationRef.current += 1; // invalidate any in-flight play
+      setScreen("confirmed");
+      setShowDashboard(true);
+      setTranscript([]);
+      setAiStatus("listening");
+      setCallSeconds(0);
+      return;
     }
-
-    runSequence();
-
+    runSequence(true);
     return () => {
-      cancelled = true;
-      timeouts.forEach(clearTimeout);
-      timeouts.clear();
-      stopTimer();
+      generationRef.current += 1;
     };
-  }, [script]);
+  }, [prefersReducedMotion, runSequence]);
+
+  const handlePlayDemo = useCallback(async () => {
+    if (isPlayingOneShot) return;
+    setIsPlayingOneShot(true);
+    try {
+      await runSequence(false);
+    } finally {
+      setIsPlayingOneShot(false);
+      // Settle on the final pose again so the static state is restored.
+      setScreen("confirmed");
+      setShowDashboard(true);
+    }
+  }, [isPlayingOneShot, runSequence]);
 
   const visibleBubbles = transcript;
 
@@ -287,7 +333,7 @@ export default function HeroPhoneAnimation() {
       </div>
 
       {/* DASHBOARD CARD */}
-      <div className="w-full max-w-sm md:w-[380px]">
+      <div className="flex w-full max-w-sm flex-col items-center gap-4 md:w-[380px]">
         <div className={styles.dashboardCard} data-show={showDashboard}>
           <div className="mb-5 flex items-center justify-between border-b border-mist pb-4">
             <div
@@ -338,6 +384,29 @@ export default function HeroPhoneAnimation() {
             </div>
           </div>
         </div>
+
+        {prefersReducedMotion && (
+          <button
+            type="button"
+            onClick={handlePlayDemo}
+            disabled={isPlayingOneShot}
+            className={`${styles.replay} disabled:cursor-not-allowed disabled:opacity-60`}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+            >
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+            </svg>
+            {isPlayingOneShot ? t("replay") : t("playDemo")}
+          </button>
+        )}
       </div>
     </div>
   );

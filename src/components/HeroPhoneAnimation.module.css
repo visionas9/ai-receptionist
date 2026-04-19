@@ -383,3 +383,46 @@
 .replay:hover {
   transform: translateY(-2px);
 }
+
+/* ------------------------------------------------------------------ */
+/* REDUCED MOTION                                                      */
+/* ------------------------------------------------------------------ */
+/* The component-level state machine pauses auto-playback when the OS
+ * setting is on, but the always-on decorative animations (avatar pulse,
+ * orb breathing, accept-button shake, live dot blink, bubble entry,
+ * dashboard slide-in) live in CSS — disable them here too.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .avatar::before,
+  .avatar::after,
+  .callBtnAccept,
+  .aiOrb,
+  .liveDot::before,
+  .checkPath {
+    animation: none !important;
+  }
+
+  .callScreen[data-active="true"] .checkCircle {
+    animation: none !important;
+    transform: scale(1);
+  }
+
+  .callScreen[data-active="true"] .checkPath {
+    stroke-dashoffset: 0;
+  }
+
+  .bubble {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .bookingRowHighlighted {
+    animation: none !important;
+  }
+
+  .dashboardCard,
+  .dashboardCard[data-show="true"] {
+    transition: none !important;
+  }
+}
