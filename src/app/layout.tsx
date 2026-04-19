@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { DM_Sans, Fraunces, Geist } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
@@ -7,8 +7,13 @@ import "./globals.css";
 const dmSans = DM_Sans({ subsets: ["latin"] });
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["700", "900"],
+  weight: ["400", "500", "600", "700", "900"],
   variable: "--font-fraunces",
+});
+const geist = Geist({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-geist",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +31,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${dmSans.className} ${fraunces.variable}`}>
+      <body className={`${dmSans.className} ${fraunces.variable} ${geist.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>

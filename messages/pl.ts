@@ -17,6 +17,34 @@ const pl = {
         "Receply odbiera Twoje telefony całą dobę, sam umawia wizyty i aktualizuje panel na bieżąco — dla każdego biznesu usługowego.", // TODO: native review
       ctaPrimary: "Zacznij za darmo", // TODO: native review
       ctaSecondary: "Zobacz, jak to działa", // TODO: native review
+      animation: {
+        incomingCall: "Połączenie przychodzące · Receply", // TODO: native review
+        callerName: "Anna Kowalska", // TODO: native review
+        callerNumber: "+48 501 234 567", // TODO: native review
+        aiReceptionist: "Asystent AI", // TODO: native review
+        businessName: "Bright Smile Dental", // TODO: native review
+        listening: "Słucham…", // TODO: native review
+        speaking: "Mówi…", // TODO: native review
+        line1: "Dzień dobry, Bright Smile Dental. W czym mogę pomóc?", // TODO: native review
+        line2:
+          "Dzień dobry, chciałabym umówić się na przegląd w piątek o 15:00.", // TODO: native review
+        line3:
+          "Sprawdzam… piątek 15:00 jest wolny. Na jakie nazwisko?", // TODO: native review
+        line4: "Anna Kowalska.", // TODO: native review
+        line5: "Zarezerwowane. Do zobaczenia w piątek o 15:00.", // TODO: native review
+        labelAI: "AI", // TODO: native review
+        labelCaller: "Klient", // TODO: native review
+        booked: "Zarezerwowane", // TODO: native review
+        bookedSubtitle: "Wizyta Anny została dodana do panelu.", // TODO: native review
+        newBookingTag: "Nowa rezerwacja", // TODO: native review
+        justNow: "Przed chwilą", // TODO: native review
+        live: "Na żywo", // TODO: native review
+        confirmed: "Potwierdzona", // TODO: native review
+        bookingDetail: "Piątek, 14 mar · 15:00 · Przegląd", // TODO: native review
+        replay: "Odtwórz ponownie", // TODO: native review
+        playDemo: "Odtwórz demo", // TODO: native review
+        ariaLabel: "Demo obsługi połączenia przez Receply", // TODO: native review
+      },
     },
     preview: {
       label: "Bright Smile Dental Clinic — Panel", // TODO: native review

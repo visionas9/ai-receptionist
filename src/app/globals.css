@@ -69,3 +69,23 @@ body {
 .font-display {
   font-family: var(--font-fraunces), serif;
 }
+
+/*
+ * Receply phone-animation palette — sourced from
+ * design-refs/receply-phone-animation.html.
+ * Exposed as Tailwind v4 theme tokens so utilities like `bg-sage`,
+ * `text-ink`, `border-mist` work site-wide.
+ */
+@theme {
+  --color-warm-bg: #faf7f2;
+  --color-cream: #f5ede1;
+  --color-sage: #5a7a6b;
+  --color-sage-dark: #3f5a4d;
+  --color-sage-light: #e8efe9;
+  --color-warm-brown: #8b6f5c;
+  --color-ink: #2a2623;
+  --color-ink-soft: #5a4f47;
+  --color-mist: #d9d3c7;
+  --color-warm-accent: #c98b5f;
+  --color-success-sage: #6b9572;
+}

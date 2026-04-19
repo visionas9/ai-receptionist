@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   Phone,
   Calendar,
@@ -14,6 +15,11 @@ import {
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
+const HeroPhoneAnimation = dynamic(
+  () => import("@/components/HeroPhoneAnimation"),
+  { ssr: false },
+);
+
 const featureKeys = [
   { key: "phone", Icon: Phone },
   { key: "booking", Icon: Calendar },
@@ -25,39 +31,8 @@ const featureKeys = [
 
 const stepKeys = ["step1", "step2", "step3"] as const;
 
-const rows = [
-  {
-    name: "Anna Kowalski",
-    date: "Mar 14",
-    time: "10:00",
-    reason: "Checkup",
-    phone: "+48 501 234 567",
-  },
-  {
-    name: "John Smith",
-    date: "Mar 14",
-    time: "11:30",
-    reason: "Cleaning",
-    phone: "+48 602 345 678",
-  },
-  {
-    name: "Maria Nowak",
-    date: "Mar 15",
-    time: "09:00",
-    reason: "Toothache",
-    phone: "+48 703 456 789",
-  },
-];
-
 export default function LandingPage() {
   const t = useTranslations("landing");
-
-  const stats = [
-    { value: "12", label: t("preview.statTotal") },
-    { value: "3", label: t("preview.statToday") },
-    { value: "12", label: t("preview.statConfirmed") },
-    { value: "8", label: t("preview.statRecordings") },
-  ];
 
   return (
     <div
@@ -165,55 +140,9 @@ export default function LandingPage() {
           </button>
         </div>
 
-        {/* Dashboard preview */}
-        <div className="animate-fade-up delay-4 mt-16 rounded-2xl overflow-hidden border border-[#f0ebe0] shadow-2xl shadow-[#00000015] hover:shadow-[0_32px_64px_rgba(0,0,0,0.12)] transition-shadow duration-300">
-          <div className="bg-[#f8f4ee] border-b border-[#f0ebe0] px-4 py-3 flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-            <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-            <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-            <span className="ml-3 text-xs text-[#999]">
-              {t("preview.label")}
-            </span>
-          </div>
-          <div className="bg-white p-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              {stats.map((stat, i) => (
-                <div
-                  key={i}
-                  className="bg-[#FFFCF7] border border-[#f0ebe0] rounded-xl p-4 hover:border-[#E65100]/30 hover:bg-[#FFF3E0]/30 transition-all duration-200 cursor-default"
-                >
-                  <p className="text-2xl font-bold text-[#1a1a1a]">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-[#999] mt-1">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-            <div className="space-y-2">
-              {rows.map((row, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between bg-[#FFFCF7] border border-[#f0ebe0] rounded-lg px-4 py-3 hover:border-[#E65100]/30 hover:bg-[#FFF8F3] transition-all duration-200 cursor-default"
-                >
-                  <span className="text-sm font-medium text-[#1a1a1a] w-32 truncate">
-                    {row.name}
-                  </span>
-                  <span className="text-xs text-[#999] hidden sm:block">
-                    {row.phone}
-                  </span>
-                  <span className="text-xs text-[#999]">
-                    {row.date} · {row.time}
-                  </span>
-                  <span className="text-xs text-[#666] hidden md:block">
-                    {row.reason}
-                  </span>
-                  <span className="text-xs bg-[#E8F5E9] text-[#2E7D32] px-2 py-0.5 rounded-full">
-                    {t("preview.statusConfirmed")}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Phone-call animation (replaces former static dashboard mockup) */}
+        <div className="animate-fade-up delay-4 mt-16">
+          <HeroPhoneAnimation />
         </div>
       </section>
 
