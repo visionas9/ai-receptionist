@@ -13,7 +13,7 @@
 - [x] Onboarding flow (5 questions, 1 at a time)
 - [x] Save onboarding answers to Supabase
 - [x] Animated loading screen after onboarding
-- [x] Pricing page — single plan (799 PLN/month, 1500 min)
+- [x] Pricing page — single plan (999 PLN/month, 1500 min)
 - [x] Broaden landing page messaging (not just clinics)
 - [x] Update landing page copy for broader audience
 - [x] Mobile-responsive appointments table (card layout)
@@ -26,7 +26,7 @@
 - [x] Stripe integration — actual payments when trial ends
 - [x] Paywall page when free minutes hit 0
 - [x] Pricing CTA buttons redirect to Stripe checkout (not dashboard)
-- [x] Single Stripe product at 799 PLN/month
+- [x] Single Stripe product at 999 PLN/month
 - [x] Paid tier minutes set to 1500 (not 99999)
 - [x] Minutes deduct correctly after each call
 - [x] Assistant prompt overhaul — natural, warm, industry-specific tone
@@ -123,7 +123,7 @@
 - All bookings in one dashboard regardless of channel
 - Each business gets their own Twilio number on signup (post-JDG)
 - Number porting — businesses keep their existing number
-- Single plan: 799 PLN/month, 1500 minutes included
+- Single plan: 999 PLN/month, 1500 minutes included
 - When 1500 min hit → number detaches → manual mode until reset
 - Free tier: 15 free minutes, browser-based test call only
 - Face-to-face demos: 1 number manually reassigned per demo (~$4/month)

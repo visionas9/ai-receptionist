@@ -110,7 +110,7 @@ const pl = {
       title: "Prosta, przejrzysta cena", // TODO: native review
       subtitle: "Jeden plan. Wszystko w zestawie. Żadnych niespodzianek.", // TODO: native review
       planName: "Pro", // TODO: native review
-      price: "799 PLN", // TODO: native review
+      price: "999 PLN", // TODO: native review
       period: "/miesiąc", // TODO: native review
       description: "Wszystko, czego potrzebujesz, by zautomatyzować recepcję.", // TODO: native review
       feature1: "1500 minut miesięcznie", // TODO: native review
@@ -224,7 +224,7 @@ const pl = {
     subtitle: "Twój asystent AI ciężko pracował. Przejdź na wyższy plan, aby działał 24/7 bez ograniczeń.", // TODO: native review
     planName: "Pro", // TODO: native review
     planDescription: "Wszystko, czego potrzebujesz, by zautomatyzować recepcję.", // TODO: native review
-    price: "799", // TODO: native review
+    price: "999", // TODO: native review
     currency: "PLN", // TODO: native review
     period: "/miesiąc", // TODO: native review
     features: {
@@ -244,7 +244,7 @@ const pl = {
     subtitle: "Zacznij z 15 bezpłatnymi minutami. Bez karty kredytowej. Anuluj kiedy chcesz.", // TODO: native review
     planName: "Pro", // TODO: native review
     planDescription: "Wszystko, czego potrzebujesz, by zautomatyzować recepcję.", // TODO: native review
-    price: "799", // TODO: native review
+    price: "999", // TODO: native review
     currency: "PLN", // TODO: native review
     period: "/miesiąc", // TODO: native review
     features: {

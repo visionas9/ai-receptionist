@@ -95,7 +95,7 @@
       "title": "Simple, transparent pricing",
       "subtitle": "One plan. Everything included. No surprises.",
       "planName": "Pro",
-      "price": "799 PLN",
+      "price": "999 PLN",
       "period": "/month",
       "description": "Everything you need to automate your reception.",
       "feature1": "1,500 minutes per month",
@@ -208,7 +208,7 @@
     "subtitle": "Your AI receptionist has been working hard. Upgrade to keep it running 24/7 with unlimited calls.",
     "planName": "Pro",
     "planDescription": "Everything you need to automate your reception.",
-    "price": "799",
+    "price": "999",
     "currency": "PLN",
     "period": "/month",
     "features": {
@@ -228,7 +228,7 @@
     "subtitle": "Start with 15 free minutes. No credit card required. Cancel anytime.",
     "planName": "Pro",
     "planDescription": "Everything you need to automate your reception.",
-    "price": "799",
+    "price": "999",
     "currency": "PLN",
     "period": "/month",
     "features": {
