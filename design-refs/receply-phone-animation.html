@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Receply — Phone Call Flow Animation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Geist:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #faf7f2;
+        --cream: #f5ede1;
+        --sage: #5a7a6b;
+        --sage-dark: #3f5a4d;
+        --sage-light: #e8efe9;
+        --warm-brown: #8b6f5c;
+        --ink: #2a2623;
+        --ink-soft: #5a4f47;
+        --mist: #d9d3c7;
+        --accent: #c98b5f;
+        --success: #6b9572;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Geist", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        overflow-x: hidden;
+        background-image:
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(90, 122, 107, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(201, 139, 95, 0.05) 0%,
+            transparent 50%
+          );
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 60px;
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      /* LEFT: Copy */
+      .copy {
+        max-width: 380px;
+      }
+      .kicker {
+        font-family: "Geist", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--sage);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .kicker::before {
+        content: "";
+        width: 30px;
+        height: 1px;
+        background: var(--sage);
+      }
+      h1 {
+        font-family: "Fraunces", serif;
+        font-weight: 400;
+        font-size: 52px;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin-bottom: 20px;
+      }
+      h1 em {
+        font-style: italic;
+        color: var(--sage);
+      }
+      .copy p {
+        font-size: 17px;
+        line-height: 1.5;
+        color: var(--ink-soft);
+        margin-bottom: 28px;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--ink);
+        color: var(--bg);
+        padding: 14px 24px;
+        border-radius: 100px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        transition:
+          transform 0.2s,
+          background 0.2s;
+      }
+      .cta:hover {
+        background: var(--sage-dark);
+        transform: translateY(-1px);
+      }
+      .cta svg {
+        transition: transform 0.2s;
+      }
+      .cta:hover svg {
+        transform: translateX(3px);
+      }
+
+      /* CENTER: Phone */
+      .phone-wrap {
+        position: relative;
+        width: 320px;
+        height: 650px;
+      }
+
+      .phone {
+        width: 100%;
+        height: 100%;
+        background: #1a1714;
+        border-radius: 52px;
+        padding: 12px;
+        box-shadow:
+          0 2px 0 rgba(255, 255, 255, 0.1) inset,
+          0 60px 80px -30px rgba(42, 38, 35, 0.35),
+          0 20px 40px -10px rgba(42, 38, 35, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .phone::before {
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 110px;
+        height: 30px;
+        background: #1a1714;
+        border-radius: 20px;
+        z-index: 10;
+      }
+
+      .screen {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, #f5ede1 0%, #faf7f2 100%);
+        border-radius: 42px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Status bar */
+      .status-bar {
+        padding: 18px 30px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink);
+        z-index: 5;
+      }
+      .status-icons {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+      .status-icons svg {
+        width: 16px;
+        height: 11px;
+      }
+
+      /* Call screens — all stacked, animated via opacity/transform */
+      .call-screen {
+        position: absolute;
+        inset: 0;
+        padding: 70px 30px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      /* Screen 1: Incoming call */
+      .incoming {
+        background: linear-gradient(180deg, #e8efe9 0%, #f5ede1 100%);
+        justify-content: space-between;
+        padding-bottom: 80px;
+      }
+      .incoming-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .incoming-label {
+        font-size: 13px;
+        color: var(--ink-soft);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: fadeIn 0.5s forwards 0.3s;
+      }
+      .avatar {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--sage) 0%,
+          var(--sage-dark) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Fraunces", serif;
+        font-weight: 500;
+        font-size: 42px;
+        color: var(--cream);
+        margin-bottom: 24px;
+        position: relative;
+      }
+      .avatar::before,
+      .avatar::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 2px solid var(--sage);
+        animation: pulse 2s infinite ease-out;
+      }
+      .avatar::after {
+        animation-delay: 1s;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
+        100% {
+          transform: scale(1.6);
+          opacity: 0;
+        }
+      }
+      .caller-name {
+        font-family: "Fraunces", serif;
+        font-size: 26px;
+        font-weight: 500;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+      .caller-number {
+        font-size: 15px;
+        color: var(--ink-soft);
+      }
+      .call-buttons {
+        display: flex;
+        gap: 70px;
+      }
+      .call-btn {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .call-btn.decline {
+        background: #d94f4f;
+      }
+      .call-btn.accept {
+        background: var(--success);
+        animation: shake 1.2s infinite;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: rotate(0);
+        }
+        25% {
+          transform: rotate(-8deg);
+        }
+        75% {
+          transform: rotate(8deg);
+        }
+      }
+      .call-btn svg {
+        width: 28px;
+        height: 28px;
+        stroke: white;
+        fill: white;
+      }
+
+      /* Screen 2: In call with AI */
+      .in-call {
+        background: linear-gradient(180deg, var(--sage-dark) 0%, #2d4239 100%);
+        color: var(--cream);
+        justify-content: flex-start;
+        padding-top: 70px;
+      }
+      .in-call-label {
+        font-size: 12px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(245, 237, 225, 0.6);
+        margin-bottom: 10px;
+      }
+      .in-call-biz {
+        font-family: "Fraunces", serif;
+        font-size: 22px;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      .in-call-timer {
+        font-size: 14px;
+        color: rgba(245, 237, 225, 0.7);
+        margin-bottom: 30px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* AI visualizer — breathing orb */
+      .ai-orb {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 35%,
+          #e8efe9 0%,
+          var(--sage) 45%,
+          var(--sage-dark) 100%
+        );
+        margin-bottom: 30px;
+        position: relative;
+        animation: breathe 2s infinite ease-in-out;
+        box-shadow: 0 0 60px rgba(232, 239, 233, 0.3);
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 60px rgba(232, 239, 233, 0.3);
+        }
+        50% {
+          transform: scale(1.08);
+          box-shadow: 0 0 90px rgba(232, 239, 233, 0.5);
+        }
+      }
+      .ai-label {
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(245, 237, 225, 0.5);
+        margin-bottom: 16px;
+      }
+
+      /* Transcript bubbles */
+      .transcript {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 4px;
+      }
+      .bubble {
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.4;
+        opacity: 0;
+        transform: translateY(10px);
+        max-width: 85%;
+        font-family: "Geist", sans-serif;
+      }
+      .bubble.ai {
+        background: rgba(245, 237, 225, 0.95);
+        color: var(--ink);
+        align-self: flex-start;
+        border-bottom-left-radius: 6px;
+      }
+      .bubble.customer {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--cream);
+        align-self: flex-end;
+        border-bottom-right-radius: 6px;
+        backdrop-filter: blur(10px);
+      }
+      .bubble-label {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        opacity: 0.55;
+        margin-bottom: 3px;
+        font-weight: 500;
+      }
+
+      /* Screen 3: Booking confirmed */
+      .confirmed {
+        background: linear-gradient(180deg, #e8efe9 0%, #f5ede1 100%);
+        justify-content: center;
+      }
+      .check-circle {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: var(--success);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        transform: scale(0);
+      }
+      @keyframes popIn {
+        to {
+          transform: scale(1);
+        }
+      }
+      .check-circle svg {
+        width: 44px;
+        height: 44px;
+        stroke: white;
+        stroke-width: 3;
+        fill: none;
+        stroke-dasharray: 50;
+        stroke-dashoffset: 50;
+        animation: draw 0.4s forwards 0.3s;
+      }
+      @keyframes draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      .confirmed-title {
+        font-family: "Fraunces", serif;
+        font-size: 28px;
+        font-weight: 500;
+        color: var(--ink);
+        margin-bottom: 8px;
+      }
+      .confirmed-subtitle {
+        font-size: 15px;
+        color: var(--ink-soft);
+        line-height: 1.5;
+        max-width: 220px;
+      }
+      .booking-card-phone {
+        margin-top: 30px;
+        background: white;
+        border-radius: 18px;
+        padding: 16px 18px;
+        width: 100%;
+        text-align: left;
+        box-shadow: 0 10px 30px -10px rgba(42, 38, 35, 0.12);
+        border: 1px solid rgba(90, 122, 107, 0.1);
+      }
+      .bc-label {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--sage);
+        margin-bottom: 6px;
+        font-weight: 500;
+      }
+      .bc-name {
+        font-family: "Fraunces", serif;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      .bc-detail {
+        font-size: 13px;
+        color: var(--ink-soft);
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* RIGHT: Dashboard card sliding in */
+      .dashboard-zone {
+        position: relative;
+        width: 380px;
+        height: 500px;
+      }
+
+      .dashboard-card {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%) translateX(-40px);
+        background: white;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow:
+          0 40px 60px -20px rgba(42, 38, 35, 0.15),
+          0 0 0 1px rgba(90, 122, 107, 0.08);
+        opacity: 0;
+        transition: all 0.7s cubic-bezier(0.34, 1.1, 0.64, 1);
+        width: 100%;
+      }
+      .dashboard-card.show {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+      }
+
+      .dash-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--mist);
+      }
+      .dash-title {
+        font-family: "Fraunces", serif;
+        font-size: 17px;
+        font-weight: 500;
+      }
+      .live-dot {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--sage);
+        font-weight: 500;
+      }
+      .live-dot::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--success);
+        animation: blink 1.5s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .new-tag {
+        display: inline-block;
+        background: var(--sage);
+        color: var(--cream);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-weight: 500;
+      }
+      .booking-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 14px 0;
+      }
+      .booking-row + .booking-row {
+        border-top: 1px solid var(--mist);
+      }
+      .booking-row.highlighted {
+        background: var(--sage-light);
+        margin: 0 -24px;
+        padding: 14px 24px;
+        border-radius: 0;
+        animation: highlight 2s forwards;
+      }
+      @keyframes highlight {
+        0% {
+          background: #b8d4bc;
+        }
+        100% {
+          background: var(--sage-light);
+        }
+      }
+      .booking-info .name {
+        font-weight: 500;
+        font-size: 15px;
+        margin-bottom: 2px;
+      }
+      .booking-info .meta {
+        font-size: 12px;
+        color: var(--ink-soft);
+      }
+      .booking-status {
+        font-size: 11px;
+        color: var(--success);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        padding: 4px 10px;
+        background: rgba(107, 149, 114, 0.12);
+        border-radius: 100px;
+      }
+
+      .arrow-connector {
+        position: absolute;
+        top: 50%;
+        left: -60px;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+      .arrow-connector.show {
+        opacity: 0.4;
+      }
+
+      /* Replay button */
+      .replay {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--ink);
+        color: var(--bg);
+        border: none;
+        padding: 12px 20px;
+        border-radius: 100px;
+        font-family: "Geist", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 10px 30px -10px rgba(42, 38, 35, 0.3);
+        transition: transform 0.2s;
+      }
+      .replay:hover {
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 900px) {
+        .stage {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .copy {
+          text-align: center;
+          max-width: 100%;
+        }
+        .kicker {
+          justify-content: center;
+        }
+        .dashboard-zone {
+          width: 100%;
+          max-width: 360px;
+          height: auto;
+          margin: 0 auto;
+        }
+        .dashboard-card {
+          position: relative;
+          transform: translateY(20px);
+          top: 0;
+        }
+        .dashboard-card.show {
+          transform: translateY(0);
+        }
+        .arrow-connector {
+          display: none;
+        }
+        h1 {
+          font-size: 38px;
+        }
+        .phone-wrap {
+          transform: scale(0.9);
+          margin: -30px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <!-- LEFT COPY -->
+      <div class="copy">
+        <div class="kicker">See it in action</div>
+        <h1>Every call <em>answered.</em> Every booking <em>captured.</em></h1>
+        <p>
+          Watch how Receply turns a customer call into a confirmed booking —
+          while you're with another client.
+        </p>
+        <a href="#" class="cta">
+          Start free
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M1 7h12M8 2l5 5-5 5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <!-- CENTER PHONE -->
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="screen">
+            <div class="status-bar">
+              <span id="clock">9:41</span>
+              <div class="status-icons">
+                <svg viewBox="0 0 16 11" fill="currentColor">
+                  <rect x="0" y="7" width="3" height="4" rx="1" />
+                  <rect x="4" y="5" width="3" height="6" rx="1" />
+                  <rect x="8" y="3" width="3" height="8" rx="1" />
+                  <rect x="12" y="0" width="3" height="11" rx="1" />
+                </svg>
+                <span style="font-size: 11px">100%</span>
+              </div>
+            </div>
+
+            <!-- Screen 1: Incoming -->
+            <div class="call-screen incoming" id="screen1">
+              <div class="incoming-top">
+                <div class="incoming-label">Incoming call · Receply</div>
+                <div class="avatar">A</div>
+                <div class="caller-name">Anna Kowalski</div>
+                <div class="caller-number">+48 501 234 567</div>
+              </div>
+              <div class="call-buttons">
+                <div class="call-btn decline">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="white"
+                    stroke="none"
+                    style="transform: rotate(135deg)"
+                  >
+                    <path
+                      d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"
+                    />
+                  </svg>
+                </div>
+                <div class="call-btn accept">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 2: In call -->
+            <div class="call-screen in-call" id="screen2">
+              <div class="in-call-label">AI Receptionist</div>
+              <div class="in-call-biz">Bright Smile Dental</div>
+              <div class="in-call-timer" id="timer">00:00</div>
+              <div class="ai-orb"></div>
+              <div class="ai-label" id="aiStatus">Listening…</div>
+              <div class="transcript" id="transcript"></div>
+            </div>
+
+            <!-- Screen 3: Confirmed -->
+            <div class="call-screen confirmed" id="screen3">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
+              </div>
+              <div class="confirmed-title">Booked</div>
+              <div class="confirmed-subtitle">
+                Anna's appointment has been added to your dashboard.
+              </div>
+              <div class="booking-card-phone">
+                <div class="bc-label">New booking</div>
+                <div class="bc-name">Anna Kowalski</div>
+                <div class="bc-detail">Friday, Mar 14 · 15:00 · Checkup</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT DASHBOARD -->
+      <div class="dashboard-zone">
+        <svg
+          class="arrow-connector"
+          id="arrow"
+          width="50"
+          height="20"
+          viewBox="0 0 50 20"
+          fill="none"
+        >
+          <path
+            d="M0 10 H40 M35 5 L40 10 L35 15"
+            stroke="var(--sage)"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+        <div class="dashboard-card" id="dashCard">
+          <div class="dash-header">
+            <div class="dash-title">Bright Smile Dental</div>
+            <div class="live-dot">Live</div>
+          </div>
+          <div class="new-tag">Just now</div>
+          <div class="booking-row highlighted">
+            <div class="booking-info">
+              <div class="name">Anna Kowalski</div>
+              <div class="meta">Fri · Mar 14 · 15:00 · Checkup</div>
+            </div>
+            <div class="booking-status">Confirmed</div>
+          </div>
+          <div class="booking-row">
+            <div class="booking-info">
+              <div class="name">John Smith</div>
+              <div class="meta">Fri · Mar 14 · 11:30 · Cleaning</div>
+            </div>
+            <div class="booking-status">Confirmed</div>
+          </div>
+          <div class="booking-row">
+            <div class="booking-info">
+              <div class="name">Maria Nowak</div>
+              <div class="meta">Sat · Mar 15 · 09:00 · Toothache</div>
+            </div>
+            <div class="booking-status">Confirmed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="replay" onclick="runSequence()">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <polyline points="23 4 23 10 17 10" />
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+      </svg>
+      Replay
+    </button>
+
+    <script>
+      const screen1 = document.getElementById("screen1");
+      const screen2 = document.getElementById("screen2");
+      const screen3 = document.getElementById("screen3");
+      const transcript = document.getElementById("transcript");
+      const aiStatus = document.getElementById("aiStatus");
+      const dashCard = document.getElementById("dashCard");
+      const arrow = document.getElementById("arrow");
+      const timer = document.getElementById("timer");
+
+      const script = [
+        { who: "ai", text: "Hello, Bright Smile Dental. How can I help?" },
+        {
+          who: "customer",
+          text: "Hi, I'd like to book a checkup for Friday at 3pm.",
+        },
+        {
+          who: "ai",
+          text: "Let me check… Friday at 3pm is available. What's the name?",
+        },
+        { who: "customer", text: "Anna Kowalski." },
+        { who: "ai", text: "Booked. See you Friday at 3pm." },
+      ];
+
+      let timerInterval = null;
+      let callSeconds = 0;
+
+      function startTimer() {
+        callSeconds = 0;
+        timer.textContent = "00:00";
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          callSeconds++;
+          const m = String(Math.floor(callSeconds / 60)).padStart(2, "0");
+          const s = String(callSeconds % 60).padStart(2, "0");
+          timer.textContent = `${m}:${s}`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function showScreen(el) {
+        [screen1, screen2, screen3].forEach((s) => (s.style.opacity = 0));
+        setTimeout(() => {
+          el.style.opacity = 1;
+        }, 50);
+      }
+
+      function addBubble(line, delay) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const b = document.createElement("div");
+            b.className = `bubble ${line.who}`;
+            b.innerHTML = `<div class="bubble-label">${line.who === "ai" ? "AI" : "Caller"}</div>${line.text}`;
+            transcript.appendChild(b);
+            requestAnimationFrame(() => {
+              b.style.transition = "all 0.4s ease";
+              b.style.opacity = "1";
+              b.style.transform = "translateY(0)";
+            });
+
+            // keep only last 2 bubbles visible, fade older ones
+            const bubbles = transcript.querySelectorAll(".bubble");
+            if (bubbles.length > 2) {
+              bubbles[bubbles.length - 3].style.opacity = "0.3";
+              bubbles[bubbles.length - 3].style.transform =
+                "translateY(-6px) scale(0.95)";
+            }
+            if (bubbles.length > 3) {
+              bubbles[bubbles.length - 4].remove();
+            }
+
+            aiStatus.textContent =
+              line.who === "ai" ? "Speaking…" : "Listening…";
+            resolve();
+          }, delay);
+        });
+      }
+
+      async function runSequence() {
+        // reset
+        transcript.innerHTML = "";
+        dashCard.classList.remove("show");
+        arrow.classList.remove("show");
+        stopTimer();
+
+        // 1. Incoming call
+        showScreen(screen1);
+        await wait(2200);
+
+        // 2. In call
+        showScreen(screen2);
+        startTimer();
+        await wait(800);
+
+        // walk through script
+        for (let i = 0; i < script.length; i++) {
+          await addBubble(script[i], 0);
+          await wait(1700);
+        }
+
+        stopTimer();
+        await wait(400);
+
+        // 3. Confirmed
+        showScreen(screen3);
+        await wait(800);
+
+        // 4. Dashboard card slides in
+        dashCard.classList.add("show");
+        setTimeout(() => arrow.classList.add("show"), 400);
+
+        await wait(5000);
+        // loop
+        runSequence();
+      }
+
+      function wait(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      // Start after a short beat
+      setTimeout(runSequence, 500);
+    </script>
+  </body>
+</html>
